@@ -1,0 +1,15 @@
+D:\Profile\Documents\Visual Studio 2017\Projects\mangaTools\mangaRenamer\bin\Release\mangaRenamer.exe.config
+D:\Profile\Documents\Visual Studio 2017\Projects\mangaTools\mangaRenamer\bin\Release\mangaRenamer.exe
+D:\Profile\Documents\Visual Studio 2017\Projects\mangaTools\mangaRenamer\bin\Release\mangaRenamer.pdb
+D:\Profile\Documents\Visual Studio 2017\Projects\mangaTools\mangaRenamer\bin\Release\itextsharp.dll
+D:\Profile\Documents\Visual Studio 2017\Projects\mangaTools\mangaRenamer\bin\Release\itextsharp.xml
+D:\Profile\Documents\Visual Studio 2017\Projects\mangaTools\mangaRenamer\obj\Release\mangaRenamer.Form1.resources
+D:\Profile\Documents\Visual Studio 2017\Projects\mangaTools\mangaRenamer\obj\Release\mangaRenamer.Properties.Resources.resources
+D:\Profile\Documents\Visual Studio 2017\Projects\mangaTools\mangaRenamer\obj\Release\mangaRenamer.csproj.GenerateResource.Cache
+D:\Profile\Documents\Visual Studio 2017\Projects\mangaTools\mangaRenamer\obj\Release\mangaRenamer.csproj.CoreCompileInputs.cache
+D:\Profile\Documents\Visual Studio 2017\Projects\mangaTools\mangaRenamer\obj\Release\mangaRenamer.exe
+D:\Profile\Documents\Visual Studio 2017\Projects\mangaTools\mangaRenamer\obj\Release\mangaRenamer.pdb
+D:\Profile\Documents\Visual Studio 2017\Projects\mangaTools\mangaRenamer\bin\Release\mangaRenamer.exe.manifest
+D:\Profile\Documents\Visual Studio 2017\Projects\mangaTools\mangaRenamer\bin\Release\mangaRenamer.application
+D:\Profile\Documents\Visual Studio 2017\Projects\mangaTools\mangaRenamer\obj\Release\mangaRenamer.exe.manifest
+D:\Profile\Documents\Visual Studio 2017\Projects\mangaTools\mangaRenamer\obj\Release\mangaRenamer.application
