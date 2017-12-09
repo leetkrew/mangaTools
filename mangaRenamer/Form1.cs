@@ -45,7 +45,13 @@ namespace mangaRenamer
         {
             try
             {
-                
+
+                btnAddQueue.Enabled = false;
+                btnClear.Enabled = false;
+                btnCopy.Enabled = false;
+                btnExportPdf.Enabled = false;
+                btnBrowseFrom.Enabled = false;
+                btnBrowseTo.Enabled = false;
 
 
                 if (txtPathFrom.Text == txtPathTo.Text)
@@ -67,42 +73,92 @@ namespace mangaRenamer
                 fileList.Clear();
                 directoryList.Clear();
 
-                var directory_tmp = new directoryModel();
-                foreach (var item in Directory.GetDirectories(txtPathFrom.Text))
+
+                BackgroundWorker bw = new BackgroundWorker();
+                bw.WorkerReportsProgress = true;
+                bw.DoWork += new DoWorkEventHandler(
+                delegate (object o, DoWorkEventArgs args)
                 {
-                    directory_tmp.directoryName = item;
-                    directoryList.Add(directory_tmp);
 
-                    directory_tmp = new directoryModel();
-                }
-
-                fileList.Clear();
-
-                int fileCounter = 1;
-
-                directoryList = directoryList.OrderBy(x => x.directoryName, new NaturalStringComparer()).ToList();
-
-                var file_tmp = new filesModel();
-                foreach (var directory_item in directoryList)
-                {
-                    foreach (var file_item in Directory.GetFiles(directory_item.directoryName))
+                    var directory_tmp = new directoryModel();
+                    foreach (var item in Directory.GetDirectories(txtPathFrom.Text))
                     {
-                        file_tmp.from = file_item;
-                        file_tmp.to = string.Format("{0}\\{1}{2}", txtPathTo.Text, fileCounter.ToString().PadLeft(7, '0'), Path.GetExtension(file_item));
-                        file_tmp.pageNo = fileCounter;
-                        fileCounter++;
-                        fileList.Add(file_tmp);
-                        file_tmp = new filesModel();
+                        directory_tmp.directoryName = item;
+                        directoryList.Add(directory_tmp);
+
+                        directory_tmp = new directoryModel();
                     }
-                }
 
-                fileList = fileList.OrderBy(x => x.from, new NaturalStringComparer()).ToList();
+                    fileList.Clear();
 
-                dataGridView1.DataSource = fileList;
-                dataGridView1.AutoResizeColumns();
+                    int fileCounter = 1;
 
-                progressBar1.Minimum = 0;
-                progressBar1.Maximum = fileList.Count;
+                    directoryList = directoryList.OrderBy(x => x.directoryName, new NaturalStringComparer()).ToList();
+
+                    var file_tmp = new filesModel();
+                    foreach (var directory_item in directoryList)
+                    {
+                        foreach (var file_item in Directory.GetFiles(directory_item.directoryName))
+                        {
+                            file_tmp.from = file_item;
+                            file_tmp.to = string.Format("{0}\\{1}{2}", txtPathTo.Text, fileCounter.ToString().PadLeft(7, '0'), Path.GetExtension(file_item));
+                            file_tmp.pageNo = fileCounter;
+                            fileCounter++;
+                            fileList.Add(file_tmp);
+                            file_tmp = new filesModel();
+                        }
+                    }
+
+                    fileList = fileList.OrderBy(x => x.from, new NaturalStringComparer()).ToList();
+
+                    
+
+                });
+
+                bw.ProgressChanged += new ProgressChangedEventHandler(delegate (object o, ProgressChangedEventArgs args)
+                {
+                    
+                    //progressBar1.Value = args.ProgressPercentage;
+                });
+
+                bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(
+                delegate (object o, RunWorkerCompletedEventArgs args)
+                {
+
+                    btnAddQueue.Enabled = true;
+                    btnClear.Enabled = true;
+                    btnCopy.Enabled = true;
+                    btnExportPdf.Enabled = true;
+                    btnBrowseFrom.Enabled = true;
+                    btnBrowseTo.Enabled = true;
+
+                    if (args.Error != null)
+                    {
+                        fileList.Clear();
+                        directoryList.Clear();
+                        dataGridView1.DataSource = null;
+                        MessageBox.Show(args.Error.Message, "Manga Renamer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        //MessageBox.Show("Completed", "Manga Renamer", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        dataGridView1.DataSource = fileList;
+                        dataGridView1.AutoResizeColumns();
+
+                        progressBar1.Minimum = 0;
+                        progressBar1.Maximum = fileList.Count;
+
+                    }
+
+                });
+
+                bw.RunWorkerAsync();
+
+
+
+                
+
+                
             } catch (Exception ex)
             {
                 directoryList.Clear();
@@ -247,6 +303,7 @@ namespace mangaRenamer
                 try
                 {
                     var byteArray = ConvertIntoSinglePDF(param, ref bw);
+                    byteArray = AddPageNumbers(byteArray, ref bw);
                     using (var fs = new FileStream(txtPathTo.Text + @"\out" + DateTime.Now.Ticks.ToString() + ".pdf", FileMode.Create, FileAccess.Write))
                     {
                         fs.Write(byteArray, 0, byteArray.Length);
@@ -294,6 +351,9 @@ namespace mangaRenamer
         public static byte[] ConvertIntoSinglePDF(List<string> filePaths, ref BackgroundWorker bw)
         {
             Document doc = new Document();
+            Document imageDocument = null;
+            PdfWriter imageDocumentWriter = null;
+
             doc.SetPageSize(PageSize.A4);
             doc.SetMargins(0, 0, 0, 0);
 
@@ -301,35 +361,43 @@ namespace mangaRenamer
 
             PdfCopy pdf = new PdfCopy(doc, ms);
             doc.Open();
-            int cnt = 0;
 
 
-            foreach (string path in filePaths)
+            for (int i = 0; i <= filePaths.Count() -1; i++)
             {
-                bw.ReportProgress(cnt);
-                cnt++;
+                bw.ReportProgress(i);
 
-                byte[] data = File.ReadAllBytes(path);
+                byte[] data = File.ReadAllBytes(filePaths[i]);
                 doc.NewPage();
-                Document imageDocument = null;
-                PdfWriter imageDocumentWriter = null;
+                imageDocument = null;
+                imageDocumentWriter = null;
 
-                if (Path.GetExtension(path).ToLower().Trim('.') == "jpg")
+                if (Path.GetExtension(filePaths[i]).ToLower().Trim('.') == "jpg")
                 {
+
+                    Paragraph para = new Paragraph("rjregalado.com");
+                    para.Alignment = Element.ALIGN_CENTER;
+                    doc.Add(para);
                     imageDocument = new Document();
                     using (var imageMS = new MemoryStream())
                     {
                         imageDocumentWriter = PdfWriter.GetInstance(imageDocument, imageMS);
+                        
                         imageDocument.Open();
                         if (imageDocument.NewPage())
                         {
                             var image = iTextSharp.text.Image.GetInstance(data);
+                            
                             if (!image.IsJpeg())
                             {
                                 continue;
                             }
 
+                            
+
                             image.Alignment = Element.ALIGN_CENTER;
+                            image.UseVariableBorders = true;
+                            image.CompressionLevel = PdfStream.BEST_COMPRESSION;
 
                             iTextSharp.text.Rectangle defaultPageSize = PageSize.A4;
 
@@ -387,7 +455,16 @@ namespace mangaRenamer
                             {
                                 throw new Exception("Unable to add image to page!");
                             }
+
+
+                            //var content = imageDocumentWriter.DirectContent;
+                            
+
                             imageDocument.Close();
+                            imageDocumentWriter.SetFullCompression();
+
+                            
+
                             imageDocumentWriter.Close();
                             PdfReader imageDocumentReader = new PdfReader(imageMS.ToArray());
                             var page = pdf.GetImportedPage(imageDocumentReader, 1);
@@ -398,7 +475,8 @@ namespace mangaRenamer
 
                 }
             }
-
+            
+            
             if (doc.IsOpen()) doc.Close();
 
             return ms.ToArray();
@@ -436,6 +514,59 @@ namespace mangaRenamer
         private void btnExploreTo_Click(object sender, EventArgs e)
         {
             Process.Start("explorer.exe", txtPathTo.Text);
+        }
+
+        public static byte[] AddPageNumbers(byte[] pdf, ref BackgroundWorker bw)
+        {
+            
+
+            MemoryStream ms = new MemoryStream();
+            // we create a reader for a certain document
+            PdfReader reader = new PdfReader(pdf);
+            // we retrieve the total number of pages
+            int n = reader.NumberOfPages;
+            // we retrieve the size of the first page
+            iTextSharp.text.Rectangle psize = reader.GetPageSize(1);
+
+            // step 1: creation of a document-object
+            Document document = new Document(psize, 50, 50, 50, 50);
+            // step 2: we create a writer that listens to the document
+            PdfWriter writer = PdfWriter.GetInstance(document, ms);
+            // step 3: we open the document
+
+            document.Open();
+            // step 4: we add content
+            PdfContentByte cb = writer.DirectContent;
+
+            int p = 0;
+            for (int page = 1; page <= reader.NumberOfPages; page++)
+            {
+                bw.ReportProgress(page);
+                document.NewPage();
+                p++;
+
+                PdfImportedPage importedPage = writer.GetImportedPage(reader, page);
+                cb.AddTemplate(importedPage, 0, 0);
+
+                BaseFont bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
+
+                cb.BeginText();
+                cb.SetFontAndSize(bf, 10);
+                //cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, +p + "/" + n, 7, 44, 0);
+                cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, string.Format("{0}", p), document.PageSize.Width / 2, 
+                    
+                    (float)
+                    (
+                        (document.PageSize.Height * 0.01) 
+                        //+ (document.PageSize.Height * 0.015)
+                    )
+
+                    , 0);
+                cb.EndText();
+            }
+            // step 5: we close the document
+            document.Close();
+            return ms.ToArray();
         }
     }
 }
