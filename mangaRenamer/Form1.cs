@@ -51,7 +51,9 @@ namespace mangaRenamer
                 btnExportPdf.Enabled = false;
                 btnBrowseFrom.Enabled = false;
                 btnBrowseTo.Enabled = false;
-
+                txtRegex.Enabled = false;
+                txtGroup.Enabled = false;
+                btnReset.Enabled = false;
 
                 if (txtPathFrom.Text == txtPathTo.Text)
                 {
@@ -120,10 +122,7 @@ namespace mangaRenamer
                         }
                     }
 
-                    fileList = fileList.OrderBy(x => x.from, new NaturalStringComparer()).ToList();
-
-
-
+                    fileList = fileList.OrderBy(x => x.sorting, new NaturalStringComparer()).ToList();
                 });
 
                 bw.ProgressChanged += new ProgressChangedEventHandler(delegate (object o, ProgressChangedEventArgs args)
@@ -142,6 +141,10 @@ namespace mangaRenamer
                     btnExportPdf.Enabled = true;
                     btnBrowseFrom.Enabled = true;
                     btnBrowseTo.Enabled = true;
+                    txtRegex.Enabled = true;
+                    txtGroup.Enabled = true;
+                    btnReset.Enabled = true;
+
 
                     if (args.Error != null)
                     {
@@ -152,10 +155,8 @@ namespace mangaRenamer
                     }
                     else
                     {
-                        //MessageBox.Show("Completed", "Manga Renamer", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         dataGridView1.DataSource = fileList;
                         dataGridView1.AutoResizeColumns();
-
                         progressBar1.Minimum = 0;
                         progressBar1.Maximum = fileList.Count;
 
@@ -191,6 +192,10 @@ namespace mangaRenamer
                 btnExportPdf.Enabled = false;
                 btnBrowseFrom.Enabled = false;
                 btnBrowseTo.Enabled = false;
+                txtRegex.Enabled = false;
+                txtGroup.Enabled = false;
+                btnReset.Enabled = false;
+
                 if (!Directory.Exists(txtPathTo.Text))
                 {
                     Directory.CreateDirectory(txtPathTo.Text);
@@ -232,6 +237,9 @@ namespace mangaRenamer
                     btnExportPdf.Enabled = true;
                     btnBrowseFrom.Enabled = true;
                     btnBrowseTo.Enabled = true;
+                    txtRegex.Enabled = true;
+                    txtGroup.Enabled = true;
+                    btnReset.Enabled = true;
 
                     progressBar1.Value = 0;
                     if (args.Error != null)
@@ -300,6 +308,9 @@ namespace mangaRenamer
             btnExportPdf.Enabled = false;
             btnBrowseFrom.Enabled = false;
             btnBrowseTo.Enabled = false;
+            txtRegex.Enabled = false;
+            txtGroup.Enabled = false;
+            btnReset.Enabled = false;
 
             var param = new List<string>();
             foreach (var item in fileList)
@@ -342,6 +353,9 @@ namespace mangaRenamer
                 btnExportPdf.Enabled = true;
                 btnBrowseFrom.Enabled = true;
                 btnBrowseTo.Enabled = true;
+                txtRegex.Enabled = true;
+                txtGroup.Enabled = true;
+                btnReset.Enabled = true;
 
                 progressBar1.Value = 0;
 
@@ -387,7 +401,6 @@ namespace mangaRenamer
 
                 if (Path.GetExtension(filePaths[i]).ToLower().Trim('.') == "jpg")
                 {
-
                     Paragraph para = new Paragraph("rjregalado.com");
                     para.Alignment = Element.ALIGN_CENTER;
                     doc.Add(para);
@@ -405,8 +418,6 @@ namespace mangaRenamer
                             {
                                 continue;
                             }
-
-
 
                             image.Alignment = Element.ALIGN_CENTER;
                             image.UseVariableBorders = true;
@@ -433,9 +444,6 @@ namespace mangaRenamer
                                         (h * scalePercent) - (float)((h * scalePercent) * scaleReduction));
 
                                 }
-
-
-
                             }
                             else
                             {
@@ -444,39 +452,16 @@ namespace mangaRenamer
                                     scalePercent = width / w;
                                     image.ScaleAbsolute((w * scalePercent) - (float)((w * scalePercent) * scaleReduction),
                                         (h * scalePercent) - (float)((h * scalePercent) * scaleReduction));
-
                                 }
-
-
-
                             }
-
-                            //todo: resize page to image size
-                            //bug: only affects the next page
-                            //iTextSharp.text.Rectangle r = (width > defaultPageSize.Width
-                            //                                || height > defaultPageSize.Height)
-                            //                                  ? new iTextSharp.text.Rectangle(width, height)
-                            //                                  : defaultPageSize;
-                            //doc.SetPageSize(new iTextSharp.text.Rectangle(w, h));
-                            //doc.NewPage();
-
-
-                            //image.ScaleToFit(doc.PageSize.Width - 10, doc.PageSize.Height - 10);
-                            //image.ScaleToFit(doc.PageSize.Width - 20, doc.PageSize.Height);
 
                             if (!imageDocument.Add(image))
                             {
                                 throw new Exception("Unable to add image to page!");
                             }
 
-
-                            //var content = imageDocumentWriter.DirectContent;
-
-
                             imageDocument.Close();
                             imageDocumentWriter.SetFullCompression();
-
-
 
                             imageDocumentWriter.Close();
                             PdfReader imageDocumentReader = new PdfReader(imageMS.ToArray());
@@ -534,21 +519,14 @@ namespace mangaRenamer
 
 
             MemoryStream ms = new MemoryStream();
-            // we create a reader for a certain document
             PdfReader reader = new PdfReader(pdf);
-            // we retrieve the total number of pages
             int n = reader.NumberOfPages;
-            // we retrieve the size of the first page
             iTextSharp.text.Rectangle psize = reader.GetPageSize(1);
 
-            // step 1: creation of a document-object
             Document document = new Document(psize, 50, 50, 50, 50);
-            // step 2: we create a writer that listens to the document
             PdfWriter writer = PdfWriter.GetInstance(document, ms);
-            // step 3: we open the document
 
             document.Open();
-            // step 4: we add content
             PdfContentByte cb = writer.DirectContent;
 
             int p = 0;
@@ -565,24 +543,21 @@ namespace mangaRenamer
 
                 cb.BeginText();
                 cb.SetFontAndSize(bf, 10);
-                //cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, +p + "/" + n, 7, 44, 0);
                 cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, string.Format("{0}", p), document.PageSize.Width / 2,
 
                     (float)
                     (
                         (document.PageSize.Height * 0.01)
-                    //+ (document.PageSize.Height * 0.015)
                     )
 
                     , 0);
                 cb.EndText();
             }
-            // step 5: we close the document
             document.Close();
             return ms.ToArray();
         }
 
-        private void Reset_Click(object sender, EventArgs e)
+        private void btnReset_Click(object sender, EventArgs e)
         {
             txtRegex.Text = "(.*)";
         }

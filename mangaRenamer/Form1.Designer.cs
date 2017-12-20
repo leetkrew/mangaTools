@@ -47,7 +47,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.txtGroup = new System.Windows.Forms.TextBox();
             this.txtRegex = new System.Windows.Forms.TextBox();
-            this.Reset = new System.Windows.Forms.Button();
+            this.btnReset = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -224,22 +224,22 @@
             this.txtRegex.TabIndex = 6;
             this.txtRegex.Text = "(.*)";
             // 
-            // Reset
+            // btnReset
             // 
-            this.Reset.Location = new System.Drawing.Point(732, 148);
-            this.Reset.Name = "Reset";
-            this.Reset.Size = new System.Drawing.Size(133, 23);
-            this.Reset.TabIndex = 8;
-            this.Reset.Text = "Reset";
-            this.Reset.UseVisualStyleBackColor = true;
-            this.Reset.Click += new System.EventHandler(this.Reset_Click);
+            this.btnReset.Location = new System.Drawing.Point(732, 148);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(133, 23);
+            this.btnReset.TabIndex = 8;
+            this.btnReset.Text = "Reset";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1012, 775);
-            this.Controls.Add(this.Reset);
+            this.Controls.Add(this.btnReset);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtGroup);
@@ -292,7 +292,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtGroup;
         private System.Windows.Forms.TextBox txtRegex;
-        private System.Windows.Forms.Button Reset;
+        private System.Windows.Forms.Button btnReset;
     }
 }
 
