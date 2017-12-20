@@ -110,13 +110,15 @@ namespace mangaRenamer
                     var file_tmp = new filesModel();
                     foreach (var directory_item in directoryList)
                     {
+                        int fileCounter_sort = 1;
                         foreach (var file_item in Directory.GetFiles(directory_item.directoryName))
                         {
-                            file_tmp.sorting = directory_item.sorting;
+                            file_tmp.sorting = string.Format("{0}.{1}", directory_item.sorting, fileCounter_sort);
                             file_tmp.from = file_item;
                             file_tmp.to = string.Format("{0}\\{1}{2}", txtPathTo.Text, fileCounter.ToString().PadLeft(7, '0'), Path.GetExtension(file_item));
                             file_tmp.pageNo = fileCounter;
                             fileCounter++;
+                            fileCounter_sort++;
                             fileList.Add(file_tmp);
                             file_tmp = new filesModel();
                         }
