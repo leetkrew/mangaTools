@@ -43,6 +43,11 @@
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.btnExploreFrom = new System.Windows.Forms.Button();
             this.btnExploreTo = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtGroup = new System.Windows.Forms.TextBox();
+            this.txtRegex = new System.Windows.Forms.TextBox();
+            this.Reset = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -63,39 +68,39 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(11, 164);
+            this.dataGridView1.Location = new System.Drawing.Point(11, 217);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(962, 501);
+            this.dataGridView1.Size = new System.Drawing.Size(962, 500);
             this.dataGridView1.TabIndex = 2;
             // 
             // btnAddQueue
             // 
-            this.btnAddQueue.Location = new System.Drawing.Point(12, 135);
+            this.btnAddQueue.Location = new System.Drawing.Point(11, 188);
             this.btnAddQueue.Name = "btnAddQueue";
             this.btnAddQueue.Size = new System.Drawing.Size(135, 23);
-            this.btnAddQueue.TabIndex = 6;
+            this.btnAddQueue.TabIndex = 9;
             this.btnAddQueue.Text = "Add to Queue";
             this.btnAddQueue.UseVisualStyleBackColor = true;
             this.btnAddQueue.Click += new System.EventHandler(this.btnAddQueue_Click);
             // 
             // btnCopy
             // 
-            this.btnCopy.Location = new System.Drawing.Point(294, 135);
+            this.btnCopy.Location = new System.Drawing.Point(293, 188);
             this.btnCopy.Name = "btnCopy";
             this.btnCopy.Size = new System.Drawing.Size(135, 23);
-            this.btnCopy.TabIndex = 8;
+            this.btnCopy.TabIndex = 11;
             this.btnCopy.Text = "Copy Files";
             this.btnCopy.UseVisualStyleBackColor = true;
             this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(153, 135);
+            this.btnClear.Location = new System.Drawing.Point(152, 188);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(135, 23);
-            this.btnClear.TabIndex = 7;
+            this.btnClear.TabIndex = 10;
             this.btnClear.Text = "Clear";
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
@@ -122,17 +127,17 @@
             // 
             // btnExportPdf
             // 
-            this.btnExportPdf.Location = new System.Drawing.Point(435, 135);
+            this.btnExportPdf.Location = new System.Drawing.Point(434, 188);
             this.btnExportPdf.Name = "btnExportPdf";
             this.btnExportPdf.Size = new System.Drawing.Size(135, 23);
-            this.btnExportPdf.TabIndex = 9;
+            this.btnExportPdf.TabIndex = 12;
             this.btnExportPdf.Text = "Export as PDF";
             this.btnExportPdf.UseVisualStyleBackColor = true;
             this.btnExportPdf.Click += new System.EventHandler(this.btnExportPdf_Click);
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(12, 671);
+            this.progressBar1.Location = new System.Drawing.Point(12, 723);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(961, 23);
             this.progressBar1.TabIndex = 9;
@@ -158,7 +163,7 @@
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(745, 697);
+            this.linkLabel1.Location = new System.Drawing.Point(744, 749);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(229, 17);
             this.linkLabel1.TabIndex = 12;
@@ -185,11 +190,60 @@
             this.btnExploreTo.UseVisualStyleBackColor = true;
             this.btnExploreTo.Click += new System.EventHandler(this.btnExploreTo_Click);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(607, 130);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(48, 17);
+            this.label4.TabIndex = 20;
+            this.label4.Text = "Group";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(9, 130);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(131, 17);
+            this.label3.TabIndex = 19;
+            this.label3.Text = "Regular Expression";
+            // 
+            // txtGroup
+            // 
+            this.txtGroup.Location = new System.Drawing.Point(610, 150);
+            this.txtGroup.Name = "txtGroup";
+            this.txtGroup.Size = new System.Drawing.Size(115, 22);
+            this.txtGroup.TabIndex = 7;
+            this.txtGroup.Text = "0";
+            // 
+            // txtRegex
+            // 
+            this.txtRegex.Location = new System.Drawing.Point(12, 150);
+            this.txtRegex.Name = "txtRegex";
+            this.txtRegex.Size = new System.Drawing.Size(588, 22);
+            this.txtRegex.TabIndex = 6;
+            this.txtRegex.Text = "(.*)";
+            // 
+            // Reset
+            // 
+            this.Reset.Location = new System.Drawing.Point(732, 148);
+            this.Reset.Name = "Reset";
+            this.Reset.Size = new System.Drawing.Size(133, 23);
+            this.Reset.TabIndex = 8;
+            this.Reset.Text = "Reset";
+            this.Reset.UseVisualStyleBackColor = true;
+            this.Reset.Click += new System.EventHandler(this.Reset_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1012, 723);
+            this.ClientSize = new System.Drawing.Size(1012, 775);
+            this.Controls.Add(this.Reset);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.txtGroup);
+            this.Controls.Add(this.txtRegex);
             this.Controls.Add(this.btnExploreTo);
             this.Controls.Add(this.btnExploreFrom);
             this.Controls.Add(this.linkLabel1);
@@ -234,6 +288,11 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Button btnExploreFrom;
         private System.Windows.Forms.Button btnExploreTo;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtGroup;
+        private System.Windows.Forms.TextBox txtRegex;
+        private System.Windows.Forms.Button Reset;
     }
 }
 

@@ -10,6 +10,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
@@ -29,8 +30,6 @@ namespace mangaRenamer
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //txtPathFrom.Text = @"D:\Profile\Documents\Mangas\Tantei Gakuen Q";
-            //txtPathTo.Text = @"D:\Profile\Documents\Mangas\out";
             dataGridView1.DataSource = null;
             directoryList.Clear();
             fileList.Clear();
@@ -83,9 +82,19 @@ namespace mangaRenamer
                     var directory_tmp = new directoryModel();
                     foreach (var item in Directory.GetDirectories(txtPathFrom.Text))
                     {
+                        try
+                        {
+                            var directoryName = item.Split(new char[] { '\\' }, StringSplitOptions.RemoveEmptyEntries).Last();
+                            var regexMatches_temp = Regex.Matches(directoryName, txtRegex.Text);
+                            directory_tmp.sorting = regexMatches_temp[0].Groups[Convert.ToInt32(txtGroup.Text)].Value;
+                        }
+                        catch
+                        {
+                            continue;
+                        }
+
                         directory_tmp.directoryName = item;
                         directoryList.Add(directory_tmp);
-
                         directory_tmp = new directoryModel();
                     }
 
@@ -93,13 +102,15 @@ namespace mangaRenamer
 
                     int fileCounter = 1;
 
-                    directoryList = directoryList.OrderBy(x => x.directoryName, new NaturalStringComparer()).ToList();
+                    directoryList = directoryList.OrderBy(x => x.sorting, new NaturalStringComparer()).ToList();
+                    //directoryList = directoryList.OrderBy(x => x.directoryName, new NaturalStringComparer()).ToList();
 
                     var file_tmp = new filesModel();
                     foreach (var directory_item in directoryList)
                     {
                         foreach (var file_item in Directory.GetFiles(directory_item.directoryName))
                         {
+                            file_tmp.sorting = directory_item.sorting;
                             file_tmp.from = file_item;
                             file_tmp.to = string.Format("{0}\\{1}{2}", txtPathTo.Text, fileCounter.ToString().PadLeft(7, '0'), Path.GetExtension(file_item));
                             file_tmp.pageNo = fileCounter;
@@ -111,13 +122,13 @@ namespace mangaRenamer
 
                     fileList = fileList.OrderBy(x => x.from, new NaturalStringComparer()).ToList();
 
-                    
+
 
                 });
 
                 bw.ProgressChanged += new ProgressChangedEventHandler(delegate (object o, ProgressChangedEventArgs args)
                 {
-                    
+
                     //progressBar1.Value = args.ProgressPercentage;
                 });
 
@@ -156,10 +167,11 @@ namespace mangaRenamer
 
 
 
-                
 
-                
-            } catch (Exception ex)
+
+
+            }
+            catch (Exception ex)
             {
                 directoryList.Clear();
                 fileList.Clear();
@@ -239,7 +251,7 @@ namespace mangaRenamer
             {
                 MessageBox.Show(ex.Message, "Manga Renamer" + ex.HResult, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            
+
         }
 
         private void btnClear_Click(object sender, EventArgs e)
@@ -309,7 +321,8 @@ namespace mangaRenamer
                         fs.Write(byteArray, 0, byteArray.Length);
                     }
 
-                } catch
+                }
+                catch
                 {
                     throw;
                 }
@@ -343,10 +356,10 @@ namespace mangaRenamer
             });
 
             bw.RunWorkerAsync();
-            
+
         }
 
-        
+
 
         public static byte[] ConvertIntoSinglePDF(List<string> filePaths, ref BackgroundWorker bw)
         {
@@ -363,7 +376,7 @@ namespace mangaRenamer
             doc.Open();
 
 
-            for (int i = 0; i <= filePaths.Count() -1; i++)
+            for (int i = 0; i <= filePaths.Count() - 1; i++)
             {
                 bw.ReportProgress(i);
 
@@ -382,18 +395,18 @@ namespace mangaRenamer
                     using (var imageMS = new MemoryStream())
                     {
                         imageDocumentWriter = PdfWriter.GetInstance(imageDocument, imageMS);
-                        
+
                         imageDocument.Open();
                         if (imageDocument.NewPage())
                         {
                             var image = iTextSharp.text.Image.GetInstance(data);
-                            
+
                             if (!image.IsJpeg())
                             {
                                 continue;
                             }
 
-                            
+
 
                             image.Alignment = Element.ALIGN_CENTER;
                             image.UseVariableBorders = true;
@@ -458,12 +471,12 @@ namespace mangaRenamer
 
 
                             //var content = imageDocumentWriter.DirectContent;
-                            
+
 
                             imageDocument.Close();
                             imageDocumentWriter.SetFullCompression();
 
-                            
+
 
                             imageDocumentWriter.Close();
                             PdfReader imageDocumentReader = new PdfReader(imageMS.ToArray());
@@ -475,8 +488,8 @@ namespace mangaRenamer
 
                 }
             }
-            
-            
+
+
             if (doc.IsOpen()) doc.Close();
 
             return ms.ToArray();
@@ -518,7 +531,7 @@ namespace mangaRenamer
 
         public static byte[] AddPageNumbers(byte[] pdf, ref BackgroundWorker bw)
         {
-            
+
 
             MemoryStream ms = new MemoryStream();
             // we create a reader for a certain document
@@ -553,12 +566,12 @@ namespace mangaRenamer
                 cb.BeginText();
                 cb.SetFontAndSize(bf, 10);
                 //cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, +p + "/" + n, 7, 44, 0);
-                cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, string.Format("{0}", p), document.PageSize.Width / 2, 
-                    
+                cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, string.Format("{0}", p), document.PageSize.Width / 2,
+
                     (float)
                     (
-                        (document.PageSize.Height * 0.01) 
-                        //+ (document.PageSize.Height * 0.015)
+                        (document.PageSize.Height * 0.01)
+                    //+ (document.PageSize.Height * 0.015)
                     )
 
                     , 0);
@@ -567,6 +580,11 @@ namespace mangaRenamer
             // step 5: we close the document
             document.Close();
             return ms.ToArray();
+        }
+
+        private void Reset_Click(object sender, EventArgs e)
+        {
+            txtRegex.Text = "(.*)";
         }
     }
 }
