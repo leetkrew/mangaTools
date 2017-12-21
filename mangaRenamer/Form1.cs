@@ -24,6 +24,8 @@ namespace mangaRenamer
     {
         List<filesModel> fileList = new List<filesModel>();
         List<directoryModel> directoryList = new List<directoryModel>();
+        //public string mangaName { get; set; }
+        private string mangaName = "out"; 
 
         public Form1()
         {
@@ -32,7 +34,6 @@ namespace mangaRenamer
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
             System.Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             this.Text = string.Format("Manga Tools {0}.{1}.{2} (by RJ Regalado)", version.Major, version.Minor, version.Build);
 
@@ -45,14 +46,12 @@ namespace mangaRenamer
             txtPathTo.ReadOnly = true;
             cboRegEx.Items.Add("(.*)");
             cboRegEx.SelectedIndex = 0;
-
         }
 
         private void btnAddQueue_Click(object sender, EventArgs e)
         {
             try
             {
-
                 btnAddQueue.Enabled = false;
                 btnClear.Enabled = false;
                 btnCopy.Enabled = false;
@@ -78,14 +77,11 @@ namespace mangaRenamer
                     throw new Exception("Destination directory is empty");
                 }
 
+                this.mangaName = txtPathFrom.Text.Split(new char[] { '\\' }, StringSplitOptions.RemoveEmptyEntries).Last();
+                
                 dataGridView1.DataSource = null;
                 fileList.Clear();
                 directoryList.Clear();
-
-                
-
-
-
 
                 string regexMatch = ((cboRegEx.SelectedIndex == -1) ? cboRegEx.Text : cboRegEx.SelectedItem.ToString());
                 
@@ -94,7 +90,6 @@ namespace mangaRenamer
                 bw.DoWork += new DoWorkEventHandler(
                 delegate (object o, DoWorkEventArgs args)
                 {
-
                     var directory_tmp = new directoryModel();
                     foreach (var item in Directory.GetDirectories(txtPathFrom.Text))
                     {
@@ -119,7 +114,6 @@ namespace mangaRenamer
                     int fileCounter = 1;
 
                     directoryList = directoryList.OrderBy(x => x.sorting, new NaturalStringComparer()).ToList();
-                    //directoryList = directoryList.OrderBy(x => x.directoryName, new NaturalStringComparer()).ToList();
 
                     var file_tmp = new filesModel();
                     foreach (var directory_item in directoryList)
@@ -129,7 +123,8 @@ namespace mangaRenamer
                         {
                             file_tmp.sorting = string.Format("Chapter {0} {1}", directory_item.sorting, fileCounter_sort);
                             file_tmp.from = file_item;
-                            file_tmp.to = string.Format("{0}\\{1}{2}", txtPathTo.Text, fileCounter.ToString().PadLeft(7, '0'), Path.GetExtension(file_item));
+                            //file_tmp.to = string.Format("{0}\\{1}{2}", txtPathTo.Text, fileCounter.ToString().PadLeft(7, '0'), Path.GetExtension(file_item));
+                            file_tmp.to = string.Format("{0}\\{1}\\{2}{3}", txtPathTo.Text, this.mangaName, fileCounter.ToString().PadLeft(7, '0'), Path.GetExtension(file_item));
                             file_tmp.pageNo = fileCounter;
                             fileCounter++;
                             fileCounter_sort++;
@@ -144,7 +139,6 @@ namespace mangaRenamer
                 bw.ProgressChanged += new ProgressChangedEventHandler(delegate (object o, ProgressChangedEventArgs args)
                 {
 
-                    //progressBar1.Value = args.ProgressPercentage;
                 });
 
                 bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(
@@ -160,7 +154,6 @@ namespace mangaRenamer
                     cboRegEx.Enabled = true;
                     txtGroup.Enabled = true;
                     btnGenerate.Enabled = true;
-
 
                     if (args.Error != null)
                     {
@@ -222,6 +215,11 @@ namespace mangaRenamer
                     {
                         try
                         {
+                            if (!Directory.Exists(Path.GetDirectoryName(row.Cells["to"].Value.ToString())))
+                            {
+                                Directory.CreateDirectory(Path.GetDirectoryName(row.Cells["to"].Value.ToString()));
+                            }
+
                             File.Copy(row.Cells["from"].Value.ToString(), row.Cells["to"].Value.ToString());
                             cnt++;
                             bw.ReportProgress(cnt);
@@ -269,7 +267,6 @@ namespace mangaRenamer
             {
                 MessageBox.Show(ex.Message, "Manga Renamer" + ex.HResult, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
 
         private void btnClear_Click(object sender, EventArgs e)
@@ -339,11 +336,17 @@ namespace mangaRenamer
                 {
                     var byteArray = ConvertIntoSinglePDF(param, ref bw);
                     byteArray = AddPageNumbers(byteArray, ref bw);
-                    using (var fs = new FileStream(txtPathTo.Text + @"\out" + DateTime.Now.Ticks.ToString() + ".pdf", FileMode.Create, FileAccess.Write))
+                    //using (var fs = new FileStream(txtPathTo.Text + @"\out" + DateTime.Now.Ticks.ToString() + ".pdf", FileMode.Create, FileAccess.Write))
+
+                    if (string.IsNullOrEmpty(this.mangaName))
+                    {
+                        this.mangaName = "out";
+                    }
+
+                    using (var fs = new FileStream(string.Format("{0}\\{1}_{2}.pdf", txtPathTo.Text, this.mangaName, DateTime.Now.Ticks.ToString()), FileMode.Create, FileAccess.Write))
                     {
                         fs.Write(byteArray, 0, byteArray.Length);
                     }
-
                 }
                 catch
                 {
@@ -385,8 +388,6 @@ namespace mangaRenamer
 
         }
 
-
-
         public static byte[] ConvertIntoSinglePDF(List<string> filePaths, ref BackgroundWorker bw)
         {
             Document doc = new Document();
@@ -400,7 +401,6 @@ namespace mangaRenamer
 
             PdfCopy pdf = new PdfCopy(doc, ms);
             doc.Open();
-
 
             for (int i = 0; i <= filePaths.Count() - 1; i++)
             {
@@ -437,10 +437,8 @@ namespace mangaRenamer
 
                             iTextSharp.text.Rectangle defaultPageSize = PageSize.A4;
 
-
                             float width = defaultPageSize.Width - doc.RightMargin - doc.LeftMargin;
                             float height = defaultPageSize.Height - doc.TopMargin - doc.BottomMargin;
-
 
                             float h = image.ScaledHeight;
                             float w = image.ScaledWidth;
@@ -485,13 +483,8 @@ namespace mangaRenamer
 
                 }
             }
-
-
             if (doc.IsOpen()) doc.Close();
-
             return ms.ToArray();
-
-
         }
 
         public static BitmapSource ConvertBitmap(Bitmap source)
@@ -556,12 +549,7 @@ namespace mangaRenamer
                 cb.BeginText();
                 cb.SetFontAndSize(bf, 10);
                 cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, string.Format("{0}", p), document.PageSize.Width / 2,
-
-                    (float)
-                    (
-                        (document.PageSize.Height * 0.01)
-                    )
-
+                    (float)((document.PageSize.Height * 0.01))
                     , 0);
                 cb.EndText();
             }
@@ -601,14 +589,13 @@ namespace mangaRenamer
                         .Replace("*", "\\*")
                         .Replace(".", "\\.")
                         ;
-                    //generatedRegExs.Add(Regex.Replace(regex1, "(=?\\d{1,})", "(.*)"));
                     generatedRegExs.Add(Regex.Replace(regex1, "(=?\\d{1,})", "(=?\\d{1,})"));
                 }
             });
 
             bw_generateRegEx.ProgressChanged += new ProgressChangedEventHandler(delegate (object o, ProgressChangedEventArgs args)
             {
-                //progressBar1.Value = args.ProgressPercentage;
+
             });
 
             bw_generateRegEx.RunWorkerCompleted += new RunWorkerCompletedEventHandler(
