@@ -9,12 +9,14 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
+
 
 namespace mangaRenamer
 {
@@ -30,6 +32,10 @@ namespace mangaRenamer
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
+            System.Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            this.Text = string.Format("Manga Tools {0}.{1}.{2} (by RJ Regalado)", version.Major, version.Minor, version.Build);
+
             dataGridView1.DataSource = null;
             directoryList.Clear();
             fileList.Clear();
@@ -96,7 +102,7 @@ namespace mangaRenamer
                         {
                             var directoryName = item.Split(new char[] { '\\' }, StringSplitOptions.RemoveEmptyEntries).Last();
                             var regexMatches_temp = Regex.Matches(directoryName, regexMatch);
-                            directory_tmp.sorting = regexMatches_temp[0].Groups[Convert.ToInt32(txtGroup.Text)].Value;
+                            directory_tmp.sorting = regexMatches_temp[0].Groups[Convert.ToInt32(txtGroup.Text)].Value.Trim();
                         }
                         catch
                         {
@@ -121,7 +127,7 @@ namespace mangaRenamer
                         int fileCounter_sort = 1;
                         foreach (var file_item in Directory.GetFiles(directory_item.directoryName))
                         {
-                            file_tmp.sorting = string.Format("{0}.{1}", directory_item.sorting, fileCounter_sort);
+                            file_tmp.sorting = string.Format("Chapter {0} {1}", directory_item.sorting, fileCounter_sort);
                             file_tmp.from = file_item;
                             file_tmp.to = string.Format("{0}\\{1}{2}", txtPathTo.Text, fileCounter.ToString().PadLeft(7, '0'), Path.GetExtension(file_item));
                             file_tmp.pageNo = fileCounter;
