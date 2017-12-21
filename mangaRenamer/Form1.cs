@@ -284,6 +284,7 @@ namespace mangaRenamer
                     mangaRenamer.Properties.Settings.Default.src = folderDialog.SelectedPath;
                     mangaRenamer.Properties.Settings.Default.Save();
                     txtPathFrom.Text = folderDialog.SelectedPath;
+                    btnGenerate_Click("hideAlert", null);
                     btnAddQueue_Click(this.btnBrowseFrom, null);
                 }
             }
@@ -299,6 +300,7 @@ namespace mangaRenamer
                     mangaRenamer.Properties.Settings.Default.dest = folderDialog.SelectedPath;
                     mangaRenamer.Properties.Settings.Default.Save();
                     txtPathTo.Text = folderDialog.SelectedPath;
+                    btnGenerate_Click("hideAlert", null);
                     btnAddQueue_Click(null, null);
                 }
             }
@@ -593,7 +595,8 @@ namespace mangaRenamer
                         .Replace("*", "\\*")
                         .Replace(".", "\\.")
                         ;
-                        generatedRegExs.Add(Regex.Replace(regex1, "(=?\\d{1,})", "(.*)"));
+                    //generatedRegExs.Add(Regex.Replace(regex1, "(=?\\d{1,})", "(.*)"));
+                    generatedRegExs.Add(Regex.Replace(regex1, "(=?\\d{1,})", "(=?\\d{1,})"));
                 }
             });
 
@@ -619,7 +622,10 @@ namespace mangaRenamer
                 }
                 else
                 {
-                    MessageBox.Show("Completed", "Manga Renamer", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    if (sender.ToString() != "hideAlert")
+                    {
+                        MessageBox.Show("Completed", "Manga Renamer", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
 
                 btnAddQueue.Enabled = true;
@@ -644,9 +650,13 @@ namespace mangaRenamer
 
         private int populateRegExGroup()
         {
-            string regexMatch = ((cboRegEx.SelectedIndex == -1) ? cboRegEx.Text : cboRegEx.SelectedItem.ToString());
-            return Regex.Matches(regexMatch, "(=?\\(\\.\\*\\))").Count;
-        }
+            string selectedRegEx = ((cboRegEx.SelectedIndex == -1) ? cboRegEx.Text : cboRegEx.SelectedItem.ToString());
 
+            string regexPatern = "(=?\\(\\.\\*\\))";
+            regexPatern += "|(=?\\(\\=\\?\\\\d\\{1\\,\\}\\))";
+            regexPatern += "|(=?\\(\\=\\?\\\\d\\{1\\,\\d\\}\\))";
+
+            return Regex.Matches(selectedRegEx, regexPatern).Count;
+        }
     }
 }
