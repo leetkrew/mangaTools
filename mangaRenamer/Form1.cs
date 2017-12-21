@@ -37,6 +37,8 @@ namespace mangaRenamer
             txtPathTo.Text = mangaRenamer.Properties.Settings.Default.dest;
             txtPathFrom.ReadOnly = true;
             txtPathTo.ReadOnly = true;
+            cboRegEx.Items.Add("(.*)");
+            cboRegEx.SelectedIndex = 0;
 
         }
 
@@ -51,9 +53,9 @@ namespace mangaRenamer
                 btnExportPdf.Enabled = false;
                 btnBrowseFrom.Enabled = false;
                 btnBrowseTo.Enabled = false;
-                txtRegex.Enabled = false;
+                cboRegEx.Enabled = false;
                 txtGroup.Enabled = false;
-                btnReset.Enabled = false;
+                btnGenerate.Enabled = false;
 
                 if (txtPathFrom.Text == txtPathTo.Text)
                 {
@@ -74,7 +76,13 @@ namespace mangaRenamer
                 fileList.Clear();
                 directoryList.Clear();
 
+                
 
+
+
+
+                string regexMatch = ((cboRegEx.SelectedIndex == -1) ? cboRegEx.Text : cboRegEx.SelectedItem.ToString());
+                
                 BackgroundWorker bw = new BackgroundWorker();
                 bw.WorkerReportsProgress = true;
                 bw.DoWork += new DoWorkEventHandler(
@@ -87,7 +95,7 @@ namespace mangaRenamer
                         try
                         {
                             var directoryName = item.Split(new char[] { '\\' }, StringSplitOptions.RemoveEmptyEntries).Last();
-                            var regexMatches_temp = Regex.Matches(directoryName, txtRegex.Text);
+                            var regexMatches_temp = Regex.Matches(directoryName, regexMatch);
                             directory_tmp.sorting = regexMatches_temp[0].Groups[Convert.ToInt32(txtGroup.Text)].Value;
                         }
                         catch
@@ -143,9 +151,9 @@ namespace mangaRenamer
                     btnExportPdf.Enabled = true;
                     btnBrowseFrom.Enabled = true;
                     btnBrowseTo.Enabled = true;
-                    txtRegex.Enabled = true;
+                    cboRegEx.Enabled = true;
                     txtGroup.Enabled = true;
-                    btnReset.Enabled = true;
+                    btnGenerate.Enabled = true;
 
 
                     if (args.Error != null)
@@ -167,12 +175,6 @@ namespace mangaRenamer
                 });
 
                 bw.RunWorkerAsync();
-
-
-
-
-
-
             }
             catch (Exception ex)
             {
@@ -194,9 +196,9 @@ namespace mangaRenamer
                 btnExportPdf.Enabled = false;
                 btnBrowseFrom.Enabled = false;
                 btnBrowseTo.Enabled = false;
-                txtRegex.Enabled = false;
+                cboRegEx.Enabled = false;
                 txtGroup.Enabled = false;
-                btnReset.Enabled = false;
+                btnGenerate.Enabled = false;
 
                 if (!Directory.Exists(txtPathTo.Text))
                 {
@@ -239,9 +241,9 @@ namespace mangaRenamer
                     btnExportPdf.Enabled = true;
                     btnBrowseFrom.Enabled = true;
                     btnBrowseTo.Enabled = true;
-                    txtRegex.Enabled = true;
+                    cboRegEx.Enabled = true;
                     txtGroup.Enabled = true;
-                    btnReset.Enabled = true;
+                    btnGenerate.Enabled = true;
 
                     progressBar1.Value = 0;
                     if (args.Error != null)
@@ -310,9 +312,9 @@ namespace mangaRenamer
             btnExportPdf.Enabled = false;
             btnBrowseFrom.Enabled = false;
             btnBrowseTo.Enabled = false;
-            txtRegex.Enabled = false;
+            cboRegEx.Enabled = false;
             txtGroup.Enabled = false;
-            btnReset.Enabled = false;
+            btnGenerate.Enabled = false;
 
             var param = new List<string>();
             foreach (var item in fileList)
@@ -355,9 +357,9 @@ namespace mangaRenamer
                 btnExportPdf.Enabled = true;
                 btnBrowseFrom.Enabled = true;
                 btnBrowseTo.Enabled = true;
-                txtRegex.Enabled = true;
+                cboRegEx.Enabled = true;
                 txtGroup.Enabled = true;
-                btnReset.Enabled = true;
+                btnGenerate.Enabled = true;
 
                 progressBar1.Value = 0;
 
@@ -559,9 +561,92 @@ namespace mangaRenamer
             return ms.ToArray();
         }
 
-        private void btnReset_Click(object sender, EventArgs e)
+        private void btnGenerate_Click(object sender, EventArgs e)
         {
-            txtRegex.Text = "(.*)";
+            btnAddQueue.Enabled = false;
+            btnClear.Enabled = false;
+            btnCopy.Enabled = false;
+            btnExportPdf.Enabled = false;
+            btnBrowseFrom.Enabled = false;
+            btnBrowseTo.Enabled = false;
+            cboRegEx.Enabled = false;
+            txtGroup.Enabled = false;
+            btnGenerate.Enabled = false;
+
+            var generatedRegExs = new List<string>();
+            BackgroundWorker bw_generateRegEx = new BackgroundWorker();
+            bw_generateRegEx.WorkerReportsProgress = true;
+            bw_generateRegEx.DoWork += new DoWorkEventHandler(
+            delegate (object o, DoWorkEventArgs args)
+            {
+                foreach (var item in Directory.GetDirectories(txtPathFrom.Text))
+                {
+                    var directoryName = item.Split(new char[] { '\\' }, StringSplitOptions.RemoveEmptyEntries).Last();
+                    string regex1 = directoryName.Replace("[", "\\[")
+                        .Replace("(", "\\(")
+                        .Replace(")", "\\)")
+                        .Replace("]", "\\]")
+                        .Replace("{", "\\{")
+                        .Replace("}", "\\}")
+                        .Replace("?", "\\?")
+                        .Replace("=", "\\=")
+                        .Replace("*", "\\*")
+                        .Replace(".", "\\.")
+                        ;
+                        generatedRegExs.Add(Regex.Replace(regex1, "(=?\\d{1,})", "(.*)"));
+                }
+            });
+
+            bw_generateRegEx.ProgressChanged += new ProgressChangedEventHandler(delegate (object o, ProgressChangedEventArgs args)
+            {
+                //progressBar1.Value = args.ProgressPercentage;
+            });
+
+            bw_generateRegEx.RunWorkerCompleted += new RunWorkerCompletedEventHandler(
+            delegate (object o, RunWorkerCompletedEventArgs args)
+            {
+                foreach (var item in generatedRegExs)
+                {
+                    if (!cboRegEx.Items.Contains(item))
+                    {
+                        cboRegEx.Items.Add(item);
+                    }
+                }
+                
+                if (args.Error != null)
+                {
+                    MessageBox.Show(args.Error.Message, "Manga Renamer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show("Completed", "Manga Renamer", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                btnAddQueue.Enabled = true;
+                btnClear.Enabled = true;
+                btnCopy.Enabled = true;
+                btnExportPdf.Enabled = true;
+                btnBrowseFrom.Enabled = true;
+                btnBrowseTo.Enabled = true;
+                cboRegEx.Enabled = true;
+                txtGroup.Enabled = true;
+                btnGenerate.Enabled = true;
+
+            });
+
+            bw_generateRegEx.RunWorkerAsync();
         }
+
+        private void cboRegEx_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtGroup.Text = populateRegExGroup().ToString();
+        }
+
+        private int populateRegExGroup()
+        {
+            string regexMatch = ((cboRegEx.SelectedIndex == -1) ? cboRegEx.Text : cboRegEx.SelectedItem.ToString());
+            return Regex.Matches(regexMatch, "(=?\\(\\.\\*\\))").Count;
+        }
+
     }
 }

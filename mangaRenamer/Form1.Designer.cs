@@ -46,8 +46,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.txtGroup = new System.Windows.Forms.TextBox();
-            this.txtRegex = new System.Windows.Forms.TextBox();
-            this.btnReset = new System.Windows.Forms.Button();
+            this.btnGenerate = new System.Windows.Forms.Button();
+            this.cboRegEx = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -216,34 +216,36 @@
             this.txtGroup.TabIndex = 7;
             this.txtGroup.Text = "0";
             // 
-            // txtRegex
+            // btnGenerate
             // 
-            this.txtRegex.Location = new System.Drawing.Point(12, 150);
-            this.txtRegex.Name = "txtRegex";
-            this.txtRegex.Size = new System.Drawing.Size(588, 22);
-            this.txtRegex.TabIndex = 6;
-            this.txtRegex.Text = "(.*)";
+            this.btnGenerate.Location = new System.Drawing.Point(732, 148);
+            this.btnGenerate.Name = "btnGenerate";
+            this.btnGenerate.Size = new System.Drawing.Size(133, 23);
+            this.btnGenerate.TabIndex = 8;
+            this.btnGenerate.Text = "Generate";
+            this.btnGenerate.UseVisualStyleBackColor = true;
+            this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
             // 
-            // btnReset
+            // cboRegEx
             // 
-            this.btnReset.Location = new System.Drawing.Point(732, 148);
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(133, 23);
-            this.btnReset.TabIndex = 8;
-            this.btnReset.Text = "Reset";
-            this.btnReset.UseVisualStyleBackColor = true;
-            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            this.cboRegEx.FormattingEnabled = true;
+            this.cboRegEx.Location = new System.Drawing.Point(11, 150);
+            this.cboRegEx.Name = "cboRegEx";
+            this.cboRegEx.Size = new System.Drawing.Size(589, 24);
+            this.cboRegEx.TabIndex = 6;
+            this.cboRegEx.SelectedIndexChanged += new System.EventHandler(this.cboRegEx_SelectedIndexChanged);
+            this.cboRegEx.TextChanged += new System.EventHandler(this.cboRegEx_SelectedIndexChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1012, 775);
-            this.Controls.Add(this.btnReset);
+            this.Controls.Add(this.cboRegEx);
+            this.Controls.Add(this.btnGenerate);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtGroup);
-            this.Controls.Add(this.txtRegex);
             this.Controls.Add(this.btnExploreTo);
             this.Controls.Add(this.btnExploreFrom);
             this.Controls.Add(this.linkLabel1);
@@ -291,8 +293,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtGroup;
-        private System.Windows.Forms.TextBox txtRegex;
-        private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.Button btnGenerate;
+        private System.Windows.Forms.ComboBox cboRegEx;
     }
 }
 
