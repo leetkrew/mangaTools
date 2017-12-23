@@ -47,6 +47,14 @@ namespace mangaRenamer
             txtPathTo.ReadOnly = true;
             cboRegEx.Items.Add("(.*)");
             cboRegEx.SelectedIndex = 0;
+
+#if DEBUG
+            {
+                txtPathFrom.Text = @"D:\Profile\Documents\Mangas\Shokugeki no Soma";
+                txtPathTo.Text = @"D:\Profile\Documents\Mangas\out";
+            }
+#endif
+
         }
 
         private void btnAddQueue_Click(object sender, EventArgs e)
