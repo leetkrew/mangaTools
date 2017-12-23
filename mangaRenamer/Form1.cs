@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -411,7 +412,14 @@ namespace mangaRenamer
                 imageDocument = null;
                 imageDocumentWriter = null;
 
-                if (Path.GetExtension(filePaths[i]).ToLower().Trim('.') == "jpg")
+                if (
+                    (Path.GetExtension(filePaths[i]).ToLower().Trim('.') == "jpg")
+                    || (Path.GetExtension(filePaths[i]).ToLower().Trim('.') == "jpeg")
+                    || (Path.GetExtension(filePaths[i]).ToLower().Trim('.') == "png")
+                    || (Path.GetExtension(filePaths[i]).ToLower().Trim('.') == "gif")
+                    || (Path.GetExtension(filePaths[i]).ToLower().Trim('.') == "tif")
+                    || (Path.GetExtension(filePaths[i]).ToLower().Trim('.') == "tiff")
+                    )
                 {
                     Paragraph para = new Paragraph("rjregalado.com");
                     para.Alignment = Element.ALIGN_CENTER;
@@ -425,6 +433,25 @@ namespace mangaRenamer
                         if (imageDocument.NewPage())
                         {
                             var image = iTextSharp.text.Image.GetInstance(data);
+
+                            if (!image.IsJpeg())
+                            {
+                                try
+                                {
+                                    using (System.Drawing.Image img = System.Drawing.Image.FromStream(new MemoryStream(data)))
+                                    {
+                                        var convertedImageMS = new MemoryStream();
+                                        img.Save(convertedImageMS, ImageFormat.Jpeg);
+                                        data = convertedImageMS.ToArray();
+                                        convertedImageMS.Dispose();
+                                    }
+                                    image = iTextSharp.text.Image.GetInstance(data);
+                                }
+                                catch
+                                {
+                                    continue;
+                                }
+                            }
 
                             if (!image.IsJpeg())
                             {
