@@ -45,9 +45,15 @@
             this.btnExploreTo = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.txtGroup = new System.Windows.Forms.TextBox();
+            this.txtChapterNumberRegExGroup = new System.Windows.Forms.TextBox();
             this.btnGenerate = new System.Windows.Forms.Button();
-            this.cboRegEx = new System.Windows.Forms.ComboBox();
+            this.cboChapterNumberRegEx = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.cboChapterTitleRegEx = new System.Windows.Forms.ComboBox();
+            this.btnGenerateTitleRegEx = new System.Windows.Forms.Button();
+            this.txtChapterTitleRegExGroup = new System.Windows.Forms.TextBox();
+            this.chkChapterTitleEnabled = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -68,16 +74,16 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(11, 217);
+            this.dataGridView1.Location = new System.Drawing.Point(11, 287);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(962, 500);
+            this.dataGridView1.Size = new System.Drawing.Size(962, 430);
             this.dataGridView1.TabIndex = 2;
             // 
             // btnAddQueue
             // 
-            this.btnAddQueue.Location = new System.Drawing.Point(11, 188);
+            this.btnAddQueue.Location = new System.Drawing.Point(11, 258);
             this.btnAddQueue.Name = "btnAddQueue";
             this.btnAddQueue.Size = new System.Drawing.Size(135, 23);
             this.btnAddQueue.TabIndex = 9;
@@ -87,7 +93,7 @@
             // 
             // btnCopy
             // 
-            this.btnCopy.Location = new System.Drawing.Point(293, 188);
+            this.btnCopy.Location = new System.Drawing.Point(293, 258);
             this.btnCopy.Name = "btnCopy";
             this.btnCopy.Size = new System.Drawing.Size(135, 23);
             this.btnCopy.TabIndex = 11;
@@ -97,7 +103,7 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(152, 188);
+            this.btnClear.Location = new System.Drawing.Point(152, 258);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(135, 23);
             this.btnClear.TabIndex = 10;
@@ -127,7 +133,7 @@
             // 
             // btnExportPdf
             // 
-            this.btnExportPdf.Location = new System.Drawing.Point(434, 188);
+            this.btnExportPdf.Location = new System.Drawing.Point(434, 258);
             this.btnExportPdf.Name = "btnExportPdf";
             this.btnExportPdf.Size = new System.Drawing.Size(135, 23);
             this.btnExportPdf.TabIndex = 12;
@@ -145,7 +151,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 23);
+            this.label1.Location = new System.Drawing.Point(8, 23);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(114, 17);
             this.label1.TabIndex = 10;
@@ -154,7 +160,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 77);
+            this.label2.Location = new System.Drawing.Point(9, 77);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(140, 17);
             this.label2.TabIndex = 11;
@@ -184,7 +190,7 @@
             // 
             this.btnExploreTo.Location = new System.Drawing.Point(871, 96);
             this.btnExploreTo.Name = "btnExploreTo";
-            this.btnExploreTo.Size = new System.Drawing.Size(135, 23);
+            this.btnExploreTo.Size = new System.Drawing.Size(133, 23);
             this.btnExploreTo.TabIndex = 5;
             this.btnExploreTo.Text = "Explore";
             this.btnExploreTo.UseVisualStyleBackColor = true;
@@ -193,32 +199,32 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(607, 130);
+            this.label4.Location = new System.Drawing.Point(727, 130);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(48, 17);
+            this.label4.Size = new System.Drawing.Size(85, 17);
             this.label4.TabIndex = 20;
-            this.label4.Text = "Group";
+            this.label4.Text = "ReEx Group";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(9, 130);
+            this.label3.Location = new System.Drawing.Point(8, 130);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(131, 17);
+            this.label3.Size = new System.Drawing.Size(239, 17);
             this.label3.TabIndex = 19;
-            this.label3.Text = "Regular Expression";
+            this.label3.Text = "Chapter Number Regular Expression";
             // 
-            // txtGroup
+            // txtChapterNumberRegExGroup
             // 
-            this.txtGroup.Location = new System.Drawing.Point(610, 150);
-            this.txtGroup.Name = "txtGroup";
-            this.txtGroup.Size = new System.Drawing.Size(115, 22);
-            this.txtGroup.TabIndex = 7;
-            this.txtGroup.Text = "0";
+            this.txtChapterNumberRegExGroup.Location = new System.Drawing.Point(730, 150);
+            this.txtChapterNumberRegExGroup.Name = "txtChapterNumberRegExGroup";
+            this.txtChapterNumberRegExGroup.Size = new System.Drawing.Size(135, 22);
+            this.txtChapterNumberRegExGroup.TabIndex = 7;
+            this.txtChapterNumberRegExGroup.Text = "0";
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Location = new System.Drawing.Point(732, 148);
+            this.btnGenerate.Location = new System.Drawing.Point(871, 149);
             this.btnGenerate.Name = "btnGenerate";
             this.btnGenerate.Size = new System.Drawing.Size(133, 23);
             this.btnGenerate.TabIndex = 8;
@@ -226,26 +232,89 @@
             this.btnGenerate.UseVisualStyleBackColor = true;
             this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
             // 
-            // cboRegEx
+            // cboChapterNumberRegEx
             // 
-            this.cboRegEx.FormattingEnabled = true;
-            this.cboRegEx.Location = new System.Drawing.Point(11, 150);
-            this.cboRegEx.Name = "cboRegEx";
-            this.cboRegEx.Size = new System.Drawing.Size(589, 24);
-            this.cboRegEx.TabIndex = 6;
-            this.cboRegEx.SelectedIndexChanged += new System.EventHandler(this.cboRegEx_SelectedIndexChanged);
-            this.cboRegEx.TextChanged += new System.EventHandler(this.cboRegEx_SelectedIndexChanged);
+            this.cboChapterNumberRegEx.FormattingEnabled = true;
+            this.cboChapterNumberRegEx.Location = new System.Drawing.Point(11, 150);
+            this.cboChapterNumberRegEx.Name = "cboChapterNumberRegEx";
+            this.cboChapterNumberRegEx.Size = new System.Drawing.Size(713, 24);
+            this.cboChapterNumberRegEx.TabIndex = 6;
+            this.cboChapterNumberRegEx.SelectedIndexChanged += new System.EventHandler(this.cboRegEx_SelectedIndexChanged);
+            this.cboChapterNumberRegEx.TextChanged += new System.EventHandler(this.cboRegEx_SelectedIndexChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(8, 184);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(226, 17);
+            this.label5.TabIndex = 21;
+            this.label5.Text = "Chapter\'s Title Regular Expression";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(727, 184);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(93, 17);
+            this.label6.TabIndex = 22;
+            this.label6.Text = "RegEx Group";
+            // 
+            // cboChapterTitleRegEx
+            // 
+            this.cboChapterTitleRegEx.FormattingEnabled = true;
+            this.cboChapterTitleRegEx.Location = new System.Drawing.Point(32, 203);
+            this.cboChapterTitleRegEx.Name = "cboChapterTitleRegEx";
+            this.cboChapterTitleRegEx.Size = new System.Drawing.Size(692, 24);
+            this.cboChapterTitleRegEx.TabIndex = 23;
+            this.cboChapterTitleRegEx.SelectedIndexChanged += new System.EventHandler(this.cboChapterTitleRegEx_SelectedIndexChanged);
+            // 
+            // btnGenerateTitleRegEx
+            // 
+            this.btnGenerateTitleRegEx.Location = new System.Drawing.Point(871, 204);
+            this.btnGenerateTitleRegEx.Name = "btnGenerateTitleRegEx";
+            this.btnGenerateTitleRegEx.Size = new System.Drawing.Size(129, 23);
+            this.btnGenerateTitleRegEx.TabIndex = 24;
+            this.btnGenerateTitleRegEx.Text = "Generate";
+            this.btnGenerateTitleRegEx.UseVisualStyleBackColor = true;
+            this.btnGenerateTitleRegEx.Click += new System.EventHandler(this.btnGenerateTitleRegEx_Click);
+            // 
+            // txtChapterTitleRegExGroup
+            // 
+            this.txtChapterTitleRegExGroup.Location = new System.Drawing.Point(730, 204);
+            this.txtChapterTitleRegExGroup.Name = "txtChapterTitleRegExGroup";
+            this.txtChapterTitleRegExGroup.Size = new System.Drawing.Size(135, 22);
+            this.txtChapterTitleRegExGroup.TabIndex = 25;
+            this.txtChapterTitleRegExGroup.Text = "0";
+            // 
+            // chkChapterTitleEnabled
+            // 
+            this.chkChapterTitleEnabled.AutoSize = true;
+            this.chkChapterTitleEnabled.Checked = true;
+            this.chkChapterTitleEnabled.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkChapterTitleEnabled.Location = new System.Drawing.Point(12, 207);
+            this.chkChapterTitleEnabled.Name = "chkChapterTitleEnabled";
+            this.chkChapterTitleEnabled.Size = new System.Drawing.Size(18, 17);
+            this.chkChapterTitleEnabled.TabIndex = 26;
+            this.chkChapterTitleEnabled.UseVisualStyleBackColor = true;
+            this.chkChapterTitleEnabled.CheckedChanged += new System.EventHandler(this.chkChapterTitleEnabled_CheckedChanged);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1012, 775);
-            this.Controls.Add(this.cboRegEx);
+            this.Controls.Add(this.chkChapterTitleEnabled);
+            this.Controls.Add(this.txtChapterTitleRegExGroup);
+            this.Controls.Add(this.btnGenerateTitleRegEx);
+            this.Controls.Add(this.cboChapterTitleRegEx);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.cboChapterNumberRegEx);
             this.Controls.Add(this.btnGenerate);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.txtGroup);
+            this.Controls.Add(this.txtChapterNumberRegExGroup);
             this.Controls.Add(this.btnExploreTo);
             this.Controls.Add(this.btnExploreFrom);
             this.Controls.Add(this.linkLabel1);
@@ -292,9 +361,15 @@
         private System.Windows.Forms.Button btnExploreTo;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtGroup;
+        private System.Windows.Forms.TextBox txtChapterNumberRegExGroup;
         private System.Windows.Forms.Button btnGenerate;
-        private System.Windows.Forms.ComboBox cboRegEx;
+        private System.Windows.Forms.ComboBox cboChapterNumberRegEx;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox cboChapterTitleRegEx;
+        private System.Windows.Forms.Button btnGenerateTitleRegEx;
+        private System.Windows.Forms.TextBox txtChapterTitleRegExGroup;
+        private System.Windows.Forms.CheckBox chkChapterTitleEnabled;
     }
 }
 

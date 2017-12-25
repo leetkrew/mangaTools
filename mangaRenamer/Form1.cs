@@ -45,8 +45,10 @@ namespace mangaRenamer
             txtPathTo.Text = mangaRenamer.Properties.Settings.Default.dest;
             txtPathFrom.ReadOnly = true;
             txtPathTo.ReadOnly = true;
-            cboRegEx.Items.Add("(.*)");
-            cboRegEx.SelectedIndex = 0;
+            cboChapterNumberRegEx.Items.Add("(.*)");
+            cboChapterTitleRegEx.Items.Add("(.*)");
+            cboChapterNumberRegEx.SelectedIndex = 0;
+            cboChapterTitleRegEx.SelectedIndex = 0;
 
 #if DEBUG
             {
@@ -61,15 +63,7 @@ namespace mangaRenamer
         {
             try
             {
-                btnAddQueue.Enabled = false;
-                btnClear.Enabled = false;
-                btnCopy.Enabled = false;
-                btnExportPdf.Enabled = false;
-                btnBrowseFrom.Enabled = false;
-                btnBrowseTo.Enabled = false;
-                cboRegEx.Enabled = false;
-                txtGroup.Enabled = false;
-                btnGenerate.Enabled = false;
+                toggleUI(false);
 
                 if (txtPathFrom.Text == txtPathTo.Text)
                 {
@@ -92,8 +86,9 @@ namespace mangaRenamer
                 fileList.Clear();
                 directoryList.Clear();
 
-                string regexMatch = ((cboRegEx.SelectedIndex == -1) ? cboRegEx.Text : cboRegEx.SelectedItem.ToString());
-                
+                string regexMatch_sorting = ((cboChapterNumberRegEx.SelectedIndex == -1) ? cboChapterNumberRegEx.Text : cboChapterNumberRegEx.SelectedItem.ToString());
+                string regexMatch_chapterTitle = ((cboChapterTitleRegEx.SelectedIndex == -1) ? cboChapterTitleRegEx.Text : cboChapterTitleRegEx.SelectedItem.ToString());
+
                 BackgroundWorker bw = new BackgroundWorker();
                 bw.WorkerReportsProgress = true;
                 bw.DoWork += new DoWorkEventHandler(
@@ -105,8 +100,21 @@ namespace mangaRenamer
                         try
                         {
                             var directoryName = item.Split(new char[] { '\\' }, StringSplitOptions.RemoveEmptyEntries).Last();
-                            var regexMatches_temp = Regex.Matches(directoryName, regexMatch);
-                            directory_tmp.sorting = regexMatches_temp[0].Groups[Convert.ToInt32(txtGroup.Text)].Value.Trim();
+                            var regexMatches_temp = Regex.Matches(directoryName, regexMatch_sorting);
+                            directory_tmp.sorting = regexMatches_temp[0].Groups[Convert.ToInt32(txtChapterNumberRegExGroup.Text)].Value.Trim();
+
+                            
+                            if (chkChapterTitleEnabled.Enabled)
+                            {
+                                regexMatches_temp = Regex.Matches(directoryName, regexMatch_chapterTitle);
+                                try
+                                {
+                                    directory_tmp.chapterTitle = regexMatches_temp[0].Groups[Convert.ToInt32(txtChapterTitleRegExGroup.Text)].Value.Trim();
+                                } catch
+                                {
+                                    directory_tmp.chapterTitle = null;
+                                }
+                            }
                         }
                         catch
                         {
@@ -114,6 +122,7 @@ namespace mangaRenamer
                         }
 
                         directory_tmp.directoryName = item;
+                        
                         directoryList.Add(directory_tmp);
                         directory_tmp = new directoryModel();
                     }
@@ -130,6 +139,10 @@ namespace mangaRenamer
                         int fileCounter_sort = 1;
                         foreach (var file_item in Directory.GetFiles(directory_item.directoryName))
                         {
+                            if (chkChapterTitleEnabled.Enabled)
+                            {
+                                file_tmp.chapterTitle = directory_item.chapterTitle;
+                            }
                             file_tmp.sorting = string.Format("Chapter {0} {1}", directory_item.sorting, fileCounter_sort);
                             file_tmp.from = file_item;
                             //file_tmp.to = string.Format("{0}\\{1}{2}", txtPathTo.Text, fileCounter.ToString().PadLeft(7, '0'), Path.GetExtension(file_item));
@@ -154,15 +167,7 @@ namespace mangaRenamer
                 delegate (object o, RunWorkerCompletedEventArgs args)
                 {
 
-                    btnAddQueue.Enabled = true;
-                    btnClear.Enabled = true;
-                    btnCopy.Enabled = true;
-                    btnExportPdf.Enabled = true;
-                    btnBrowseFrom.Enabled = true;
-                    btnBrowseTo.Enabled = true;
-                    cboRegEx.Enabled = true;
-                    txtGroup.Enabled = true;
-                    btnGenerate.Enabled = true;
+                    toggleUI(true);
 
                     if (args.Error != null)
                     {
@@ -198,15 +203,7 @@ namespace mangaRenamer
         {
             try
             {
-                btnAddQueue.Enabled = false;
-                btnClear.Enabled = false;
-                btnCopy.Enabled = false;
-                btnExportPdf.Enabled = false;
-                btnBrowseFrom.Enabled = false;
-                btnBrowseTo.Enabled = false;
-                cboRegEx.Enabled = false;
-                txtGroup.Enabled = false;
-                btnGenerate.Enabled = false;
+                toggleUI(false);
 
                 if (!Directory.Exists(txtPathTo.Text))
                 {
@@ -248,15 +245,7 @@ namespace mangaRenamer
                 bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(
                 delegate (object o, RunWorkerCompletedEventArgs args)
                 {
-                    btnAddQueue.Enabled = true;
-                    btnClear.Enabled = true;
-                    btnCopy.Enabled = true;
-                    btnExportPdf.Enabled = true;
-                    btnBrowseFrom.Enabled = true;
-                    btnBrowseTo.Enabled = true;
-                    cboRegEx.Enabled = true;
-                    txtGroup.Enabled = true;
-                    btnGenerate.Enabled = true;
+                    toggleUI(true);
 
                     progressBar1.Value = 0;
                     if (args.Error != null)
@@ -320,15 +309,7 @@ namespace mangaRenamer
 
         private void btnExportPdf_Click(object sender, EventArgs e)
         {
-            btnAddQueue.Enabled = false;
-            btnClear.Enabled = false;
-            btnCopy.Enabled = false;
-            btnExportPdf.Enabled = false;
-            btnBrowseFrom.Enabled = false;
-            btnBrowseTo.Enabled = false;
-            cboRegEx.Enabled = false;
-            txtGroup.Enabled = false;
-            btnGenerate.Enabled = false;
+            toggleUI(false);
 
             var param = new List<string>();
             foreach (var item in fileList)
@@ -371,15 +352,7 @@ namespace mangaRenamer
             bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(
             delegate (object o, RunWorkerCompletedEventArgs args)
             {
-                btnAddQueue.Enabled = true;
-                btnClear.Enabled = true;
-                btnCopy.Enabled = true;
-                btnExportPdf.Enabled = true;
-                btnBrowseFrom.Enabled = true;
-                btnBrowseTo.Enabled = true;
-                cboRegEx.Enabled = true;
-                txtGroup.Enabled = true;
-                btnGenerate.Enabled = true;
+                toggleUI(true);
 
                 progressBar1.Value = 0;
 
@@ -594,15 +567,7 @@ namespace mangaRenamer
 
         private void btnGenerate_Click(object sender, EventArgs e)
         {
-            btnAddQueue.Enabled = false;
-            btnClear.Enabled = false;
-            btnCopy.Enabled = false;
-            btnExportPdf.Enabled = false;
-            btnBrowseFrom.Enabled = false;
-            btnBrowseTo.Enabled = false;
-            cboRegEx.Enabled = false;
-            txtGroup.Enabled = false;
-            btnGenerate.Enabled = false;
+            toggleUI(false);
 
             var generatedRegExs = new List<string>();
             BackgroundWorker bw_generateRegEx = new BackgroundWorker();
@@ -638,12 +603,23 @@ namespace mangaRenamer
             {
                 foreach (var item in generatedRegExs)
                 {
-                    if (!cboRegEx.Items.Contains(item))
+                    if (!cboChapterNumberRegEx.Items.Contains(item))
                     {
-                        cboRegEx.Items.Add(item);
+                        cboChapterNumberRegEx.Items.Add(item);
                     }
                 }
-                
+
+                string regEx2 = "";
+                foreach (var item in cboChapterNumberRegEx.Items)
+                {
+                    if ((string)item == "(.*)")
+                    {
+                        continue;
+                    }
+                    regEx2 = string.Format("{0}|{1}", regEx2, item);
+                }
+                cboChapterNumberRegEx.Items.Add(regEx2.Substring(1));
+
                 if (args.Error != null)
                 {
                     MessageBox.Show(args.Error.Message, "Manga Renamer", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -656,15 +632,7 @@ namespace mangaRenamer
                     }
                 }
 
-                btnAddQueue.Enabled = true;
-                btnClear.Enabled = true;
-                btnCopy.Enabled = true;
-                btnExportPdf.Enabled = true;
-                btnBrowseFrom.Enabled = true;
-                btnBrowseTo.Enabled = true;
-                cboRegEx.Enabled = true;
-                txtGroup.Enabled = true;
-                btnGenerate.Enabled = true;
+                toggleUI(true);
 
             });
 
@@ -673,18 +641,79 @@ namespace mangaRenamer
 
         private void cboRegEx_SelectedIndexChanged(object sender, EventArgs e)
         {
-            txtGroup.Text = populateRegExGroup().ToString();
+            txtChapterNumberRegExGroup.Text = populateRegExGroup().ToString();
         }
 
         private int populateRegExGroup()
         {
-            string selectedRegEx = ((cboRegEx.SelectedIndex == -1) ? cboRegEx.Text : cboRegEx.SelectedItem.ToString());
+            string selectedRegEx = ((cboChapterNumberRegEx.SelectedIndex == -1) ? cboChapterNumberRegEx.Text : cboChapterNumberRegEx.SelectedItem.ToString());
 
             string regexPatern = "(=?\\(\\.\\*\\))";
             regexPatern += "|(=?\\(\\=\\?\\\\d\\{1\\,\\}\\))";
             regexPatern += "|(=?\\(\\=\\?\\\\d\\{1\\,\\d\\}\\))";
 
             return Regex.Matches(selectedRegEx, regexPatern).Count;
+        }
+
+        private void chkChapterTitleEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkChapterTitleEnabled.Checked)
+            {
+                cboChapterTitleRegEx.Enabled = true;
+                txtChapterTitleRegExGroup.Enabled = true;
+                btnGenerateTitleRegEx.Enabled = true;
+            } else
+            {
+                cboChapterTitleRegEx.Enabled = false;
+                txtChapterTitleRegExGroup.Enabled = false;
+                btnGenerateTitleRegEx.Enabled = false;
+            }
+        }
+
+        private void btnGenerateTitleRegEx_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cboChapterTitleRegEx_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtChapterTitleRegExGroup.Text = populateRegExGroup().ToString();
+        }
+
+        private void toggleUI(bool trigger)
+        {
+            btnAddQueue.Enabled = trigger;
+            btnClear.Enabled = trigger;
+            btnCopy.Enabled = trigger;
+            btnExportPdf.Enabled = trigger;
+            btnBrowseFrom.Enabled = trigger;
+            btnBrowseTo.Enabled = trigger;
+            cboChapterNumberRegEx.Enabled = trigger;
+            txtChapterNumberRegExGroup.Enabled = trigger;
+            btnGenerate.Enabled = trigger;
+
+            chkChapterTitleEnabled.Enabled = trigger;
+
+            //cboChapterTitleRegEx.Enabled = trigger;
+            //txtChapterTitleRegExGroup.Enabled = trigger;
+            //btnGenerateTitleRegEx.Enabled = trigger;
+
+            cboChapterTitleRegEx.Enabled = false;
+            txtChapterTitleRegExGroup.Enabled = false;
+            btnGenerateTitleRegEx.Enabled = false;
+
+            if (trigger)
+            {
+                if (chkChapterTitleEnabled.Checked)
+                {
+                    cboChapterTitleRegEx.Enabled = true;
+                    txtChapterTitleRegExGroup.Enabled = true;
+                    btnGenerateTitleRegEx.Enabled = true;
+                }
+            }
+
+            
+            
         }
     }
 }
