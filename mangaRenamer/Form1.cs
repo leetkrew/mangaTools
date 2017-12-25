@@ -50,6 +50,22 @@ namespace mangaRenamer
             cboChapterNumberRegEx.SelectedIndex = 0;
             cboChapterTitleRegEx.SelectedIndex = 0;
 
+            string[] pageSizeArray =
+            {
+                "LETTER", "ARCH_B",  "ARCH_A", "FLSA",  "FLSE",  "HALFLETTER",  "_11X17",  "ID_1",  "ID_2",  "ID_3",  "LEDGER",
+                "CROWN_QUARTO",  "ARCH_C",  "LARGE_CROWN_QUARTO",  "ROYAL_QUARTO",  "CROWN_OCTAVO",  "LARGE_CROWN_OCTAVO",
+                "DEMY_OCTAVO",  "ROYAL_OCTAVO",  "SMALL_PAPERBACK",  "PENGUIN_SMALL_PAPERBACK",  "PENGUIN_LARGE_PAPERBACK",
+                "LETTER_LANDSCAPE",  "LEGAL_LANDSCAPE",  "A4_LANDSCAPE",  "DEMY_QUARTO",  "ARCH_D",  "ARCH_E",  "A7",  "TABLOID", 
+                "EXECUTIVE",  "POSTCARD",  "A0",  "A1",  "A2",  "A3",  "A4",  "A5",  "A6",  "B10",  "LEGAL",  "A8",  "A10", 
+                 "B0",  "B1",  "B2",  "B3",  "B4",  "B5",  "B6",  "B7",  "B8",  "B9",  "A9",  "NOTE"
+            };
+
+            Array.Sort(pageSizeArray);
+
+            cboPaperSize.Items.AddRange(pageSizeArray);
+            cboPaperSize.SelectedIndex = 6; // A4
+
+
 #if DEBUG
             {
                 txtPathFrom.Text = @"D:\Profile\Documents\Mangas\Shokugeki no Soma";
@@ -317,6 +333,8 @@ namespace mangaRenamer
                 param.Add(item.from);
             }
 
+            string paperSize = cboPaperSize.Text;
+
             BackgroundWorker bw = new BackgroundWorker();
             bw.WorkerReportsProgress = true;
             bw.DoWork += new DoWorkEventHandler(
@@ -324,8 +342,13 @@ namespace mangaRenamer
             {
                 try
                 {
-                    var byteArray = ConvertIntoSinglePDF(param, ref bw);
-                    byteArray = AddPageNumbers(byteArray, ref bw);
+                    var byteArray = ConvertIntoSinglePDF(param, ref bw, paperSize);
+
+                    if (chkAddPageNumber.Checked)
+                    {
+                        byteArray = AddPageNumbers(byteArray, ref bw);
+                    }
+                    
                     //using (var fs = new FileStream(txtPathTo.Text + @"\out" + DateTime.Now.Ticks.ToString() + ".pdf", FileMode.Create, FileAccess.Write))
 
                     if (string.IsNullOrEmpty(this.mangaName))
@@ -370,13 +393,79 @@ namespace mangaRenamer
 
         }
 
-        public static byte[] ConvertIntoSinglePDF(List<string> filePaths, ref BackgroundWorker bw)
+        private Document setPageSize(ref  Document doc, string paperSize)
+        {
+            //doc.SetPageSize(PageSize.A4);
+
+            if (paperSize == "LETTER") { doc.SetPageSize(PageSize.LETTER); }
+            if (paperSize == "ARCH_B") { doc.SetPageSize(PageSize.ARCH_B); }
+            if (paperSize == "ARCH_A") { doc.SetPageSize(PageSize.ARCH_A); }
+            if (paperSize == "FLSA") { doc.SetPageSize(PageSize.FLSA); }
+            if (paperSize == "FLSE") { doc.SetPageSize(PageSize.FLSE); }
+            if (paperSize == "HALFLETTER") { doc.SetPageSize(PageSize.HALFLETTER); }
+            if (paperSize == "_11X17") { doc.SetPageSize(PageSize._11X17); }
+            if (paperSize == "ID_1") { doc.SetPageSize(PageSize.ID_1); }
+            if (paperSize == "ID_2") { doc.SetPageSize(PageSize.ID_2); }
+            if (paperSize == "ID_3") { doc.SetPageSize(PageSize.ID_3); }
+            if (paperSize == "LEDGER") { doc.SetPageSize(PageSize.LEDGER); }
+            if (paperSize == "CROWN_QUARTO") { doc.SetPageSize(PageSize.CROWN_QUARTO); }
+            if (paperSize == "ARCH_C") { doc.SetPageSize(PageSize.ARCH_C); }
+            if (paperSize == "LARGE_CROWN_QUARTO") { doc.SetPageSize(PageSize.LARGE_CROWN_QUARTO); }
+            if (paperSize == "CROWN_OCTAVO") { doc.SetPageSize(PageSize.CROWN_OCTAVO); }
+            if (paperSize == "LARGE_CROWN_OCTAVO") { doc.SetPageSize(PageSize.LARGE_CROWN_OCTAVO); }
+            if (paperSize == "DEMY_OCTAVO") { doc.SetPageSize(PageSize.DEMY_OCTAVO); }
+            if (paperSize == "ROYAL_OCTAVO") { doc.SetPageSize(PageSize.ROYAL_OCTAVO); }
+            if (paperSize == "SMALL_PAPERBACK") { doc.SetPageSize(PageSize.SMALL_PAPERBACK); }
+            if (paperSize == "PENGUIN_SMALL_PAPERBACK") { doc.SetPageSize(PageSize.PENGUIN_SMALL_PAPERBACK); }
+            if (paperSize == "PENGUIN_LARGE_PAPERBACK") { doc.SetPageSize(PageSize.PENGUIN_LARGE_PAPERBACK); }
+            if (paperSize == "LETTER_LANDSCAPE") { doc.SetPageSize(PageSize.LETTER_LANDSCAPE); }
+            if (paperSize == "LEGAL_LANDSCAPE") { doc.SetPageSize(PageSize.LEGAL_LANDSCAPE); }
+            if (paperSize == "A4_LANDSCAPE") { doc.SetPageSize(PageSize.A4_LANDSCAPE); }
+            if (paperSize == "DEMY_QUARTO") { doc.SetPageSize(PageSize.DEMY_QUARTO); }
+            if (paperSize == "ARCH_D") { doc.SetPageSize(PageSize.ARCH_D); }
+            if (paperSize == "ARCH_E") { doc.SetPageSize(PageSize.ARCH_E); }
+            if (paperSize == "A7") { doc.SetPageSize(PageSize.A7); }
+            if (paperSize == "TABLOID") { doc.SetPageSize(PageSize.TABLOID); }
+            if (paperSize == "EXECUTIVE") { doc.SetPageSize(PageSize.EXECUTIVE); }
+            if (paperSize == "POSTCARD") { doc.SetPageSize(PageSize.POSTCARD); }
+            if (paperSize == "A0") { doc.SetPageSize(PageSize.A0); }
+            if (paperSize == "A1") { doc.SetPageSize(PageSize.A1); }
+            if (paperSize == "A2") { doc.SetPageSize(PageSize.A2); }
+            if (paperSize == "A3") { doc.SetPageSize(PageSize.A3); }
+            if (paperSize == "A4") { doc.SetPageSize(PageSize.A4); }
+            if (paperSize == "A5") { doc.SetPageSize(PageSize.A5); }
+            if (paperSize == "A6") { doc.SetPageSize(PageSize.A6); }
+            if (paperSize == "B10") { doc.SetPageSize(PageSize.B10); }
+            if (paperSize == "LEGAL") { doc.SetPageSize(PageSize.LEGAL); }
+            if (paperSize == "A8") { doc.SetPageSize(PageSize.A8); }
+            if (paperSize == "A10") { doc.SetPageSize(PageSize.A10); }
+            if (paperSize == "B0") { doc.SetPageSize(PageSize.B0); }
+            if (paperSize == "B1") { doc.SetPageSize(PageSize.B1); }
+            if (paperSize == "B2") { doc.SetPageSize(PageSize.B2); }
+            if (paperSize == "B3") { doc.SetPageSize(PageSize.B3); }
+            if (paperSize == "B4") { doc.SetPageSize(PageSize.B4); }
+            if (paperSize == "B5") { doc.SetPageSize(PageSize.B5); }
+            if (paperSize == "B6") { doc.SetPageSize(PageSize.B6); }
+            if (paperSize == "B7") { doc.SetPageSize(PageSize.B7); }
+            if (paperSize == "B8") { doc.SetPageSize(PageSize.B8); }
+            if (paperSize == "B9") { doc.SetPageSize(PageSize.B9); }
+            if (paperSize == "A9") { doc.SetPageSize(PageSize.A9); }
+            if (paperSize == "NOTE") { doc.SetPageSize(PageSize.NOTE); }
+
+            return doc;
+        }
+
+        public byte[] ConvertIntoSinglePDF(List<string> filePaths, ref BackgroundWorker bw, string paperSize)
         {
             Document doc = new Document();
             Document imageDocument = null;
             PdfWriter imageDocumentWriter = null;
 
-            doc.SetPageSize(PageSize.A4);
+            doc = setPageSize(ref doc, paperSize);
+
+            //doc.SetPageSize(PageSize.A4);
+
+
             doc.SetMargins(0, 0, 0, 0);
 
             var ms = new MemoryStream();
@@ -711,9 +800,6 @@ namespace mangaRenamer
                     btnGenerateTitleRegEx.Enabled = true;
                 }
             }
-
-            
-            
         }
     }
 }

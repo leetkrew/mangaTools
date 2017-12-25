@@ -54,6 +54,8 @@
             this.btnGenerateTitleRegEx = new System.Windows.Forms.Button();
             this.txtChapterTitleRegExGroup = new System.Windows.Forms.TextBox();
             this.chkChapterTitleEnabled = new System.Windows.Forms.CheckBox();
+            this.chkAddPageNumber = new System.Windows.Forms.CheckBox();
+            this.cboPaperSize = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -61,29 +63,29 @@
             // 
             this.txtPathFrom.Location = new System.Drawing.Point(12, 43);
             this.txtPathFrom.Name = "txtPathFrom";
-            this.txtPathFrom.Size = new System.Drawing.Size(712, 22);
+            this.txtPathFrom.Size = new System.Drawing.Size(275, 22);
             this.txtPathFrom.TabIndex = 0;
             // 
             // txtPathTo
             // 
-            this.txtPathTo.Location = new System.Drawing.Point(12, 97);
+            this.txtPathTo.Location = new System.Drawing.Point(590, 42);
             this.txtPathTo.Name = "txtPathTo";
-            this.txtPathTo.Size = new System.Drawing.Size(712, 22);
+            this.txtPathTo.Size = new System.Drawing.Size(275, 22);
             this.txtPathTo.TabIndex = 3;
             // 
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(11, 287);
+            this.dataGridView1.Location = new System.Drawing.Point(11, 195);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(962, 430);
+            this.dataGridView1.Size = new System.Drawing.Size(1134, 522);
             this.dataGridView1.TabIndex = 2;
             // 
             // btnAddQueue
             // 
-            this.btnAddQueue.Location = new System.Drawing.Point(11, 258);
+            this.btnAddQueue.Location = new System.Drawing.Point(12, 166);
             this.btnAddQueue.Name = "btnAddQueue";
             this.btnAddQueue.Size = new System.Drawing.Size(135, 23);
             this.btnAddQueue.TabIndex = 9;
@@ -93,7 +95,7 @@
             // 
             // btnCopy
             // 
-            this.btnCopy.Location = new System.Drawing.Point(293, 258);
+            this.btnCopy.Location = new System.Drawing.Point(294, 166);
             this.btnCopy.Name = "btnCopy";
             this.btnCopy.Size = new System.Drawing.Size(135, 23);
             this.btnCopy.TabIndex = 11;
@@ -103,7 +105,7 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(152, 258);
+            this.btnClear.Location = new System.Drawing.Point(153, 166);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(135, 23);
             this.btnClear.TabIndex = 10;
@@ -113,7 +115,7 @@
             // 
             // btnBrowseFrom
             // 
-            this.btnBrowseFrom.Location = new System.Drawing.Point(730, 43);
+            this.btnBrowseFrom.Location = new System.Drawing.Point(293, 43);
             this.btnBrowseFrom.Name = "btnBrowseFrom";
             this.btnBrowseFrom.Size = new System.Drawing.Size(135, 23);
             this.btnBrowseFrom.TabIndex = 1;
@@ -123,7 +125,7 @@
             // 
             // btnBrowseTo
             // 
-            this.btnBrowseTo.Location = new System.Drawing.Point(730, 96);
+            this.btnBrowseTo.Location = new System.Drawing.Point(871, 42);
             this.btnBrowseTo.Name = "btnBrowseTo";
             this.btnBrowseTo.Size = new System.Drawing.Size(135, 23);
             this.btnBrowseTo.TabIndex = 4;
@@ -133,7 +135,7 @@
             // 
             // btnExportPdf
             // 
-            this.btnExportPdf.Location = new System.Drawing.Point(434, 258);
+            this.btnExportPdf.Location = new System.Drawing.Point(435, 166);
             this.btnExportPdf.Name = "btnExportPdf";
             this.btnExportPdf.Size = new System.Drawing.Size(135, 23);
             this.btnExportPdf.TabIndex = 12;
@@ -145,7 +147,7 @@
             // 
             this.progressBar1.Location = new System.Drawing.Point(12, 723);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(961, 23);
+            this.progressBar1.Size = new System.Drawing.Size(1132, 23);
             this.progressBar1.TabIndex = 9;
             // 
             // label1
@@ -160,7 +162,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 77);
+            this.label2.Location = new System.Drawing.Point(587, 22);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(140, 17);
             this.label2.TabIndex = 11;
@@ -169,7 +171,7 @@
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(744, 749);
+            this.linkLabel1.Location = new System.Drawing.Point(916, 749);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(229, 17);
             this.linkLabel1.TabIndex = 12;
@@ -178,7 +180,7 @@
             // 
             // btnExploreFrom
             // 
-            this.btnExploreFrom.Location = new System.Drawing.Point(871, 43);
+            this.btnExploreFrom.Location = new System.Drawing.Point(434, 42);
             this.btnExploreFrom.Name = "btnExploreFrom";
             this.btnExploreFrom.Size = new System.Drawing.Size(129, 23);
             this.btnExploreFrom.TabIndex = 2;
@@ -188,7 +190,7 @@
             // 
             // btnExploreTo
             // 
-            this.btnExploreTo.Location = new System.Drawing.Point(871, 96);
+            this.btnExploreTo.Location = new System.Drawing.Point(1012, 41);
             this.btnExploreTo.Name = "btnExploreTo";
             this.btnExploreTo.Size = new System.Drawing.Size(133, 23);
             this.btnExploreTo.TabIndex = 5;
@@ -199,7 +201,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(727, 130);
+            this.label4.Location = new System.Drawing.Point(291, 82);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(85, 17);
             this.label4.TabIndex = 20;
@@ -208,7 +210,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 130);
+            this.label3.Location = new System.Drawing.Point(9, 80);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(239, 17);
             this.label3.TabIndex = 19;
@@ -216,15 +218,15 @@
             // 
             // txtChapterNumberRegExGroup
             // 
-            this.txtChapterNumberRegExGroup.Location = new System.Drawing.Point(730, 150);
+            this.txtChapterNumberRegExGroup.Location = new System.Drawing.Point(294, 102);
             this.txtChapterNumberRegExGroup.Name = "txtChapterNumberRegExGroup";
-            this.txtChapterNumberRegExGroup.Size = new System.Drawing.Size(135, 22);
+            this.txtChapterNumberRegExGroup.Size = new System.Drawing.Size(131, 22);
             this.txtChapterNumberRegExGroup.TabIndex = 7;
             this.txtChapterNumberRegExGroup.Text = "0";
             // 
             // btnGenerate
             // 
-            this.btnGenerate.Location = new System.Drawing.Point(871, 149);
+            this.btnGenerate.Location = new System.Drawing.Point(431, 101);
             this.btnGenerate.Name = "btnGenerate";
             this.btnGenerate.Size = new System.Drawing.Size(133, 23);
             this.btnGenerate.TabIndex = 8;
@@ -235,9 +237,9 @@
             // cboChapterNumberRegEx
             // 
             this.cboChapterNumberRegEx.FormattingEnabled = true;
-            this.cboChapterNumberRegEx.Location = new System.Drawing.Point(11, 150);
+            this.cboChapterNumberRegEx.Location = new System.Drawing.Point(12, 100);
             this.cboChapterNumberRegEx.Name = "cboChapterNumberRegEx";
-            this.cboChapterNumberRegEx.Size = new System.Drawing.Size(713, 24);
+            this.cboChapterNumberRegEx.Size = new System.Drawing.Size(276, 24);
             this.cboChapterNumberRegEx.TabIndex = 6;
             this.cboChapterNumberRegEx.SelectedIndexChanged += new System.EventHandler(this.cboRegEx_SelectedIndexChanged);
             this.cboChapterNumberRegEx.TextChanged += new System.EventHandler(this.cboRegEx_SelectedIndexChanged);
@@ -245,7 +247,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(8, 184);
+            this.label5.Location = new System.Drawing.Point(590, 81);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(226, 17);
             this.label5.TabIndex = 21;
@@ -254,7 +256,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(727, 184);
+            this.label6.Location = new System.Drawing.Point(872, 83);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(93, 17);
             this.label6.TabIndex = 22;
@@ -263,15 +265,15 @@
             // cboChapterTitleRegEx
             // 
             this.cboChapterTitleRegEx.FormattingEnabled = true;
-            this.cboChapterTitleRegEx.Location = new System.Drawing.Point(32, 203);
+            this.cboChapterTitleRegEx.Location = new System.Drawing.Point(618, 100);
             this.cboChapterTitleRegEx.Name = "cboChapterTitleRegEx";
-            this.cboChapterTitleRegEx.Size = new System.Drawing.Size(692, 24);
+            this.cboChapterTitleRegEx.Size = new System.Drawing.Size(248, 24);
             this.cboChapterTitleRegEx.TabIndex = 23;
             this.cboChapterTitleRegEx.SelectedIndexChanged += new System.EventHandler(this.cboChapterTitleRegEx_SelectedIndexChanged);
             // 
             // btnGenerateTitleRegEx
             // 
-            this.btnGenerateTitleRegEx.Location = new System.Drawing.Point(871, 204);
+            this.btnGenerateTitleRegEx.Location = new System.Drawing.Point(1016, 100);
             this.btnGenerateTitleRegEx.Name = "btnGenerateTitleRegEx";
             this.btnGenerateTitleRegEx.Size = new System.Drawing.Size(129, 23);
             this.btnGenerateTitleRegEx.TabIndex = 24;
@@ -281,9 +283,9 @@
             // 
             // txtChapterTitleRegExGroup
             // 
-            this.txtChapterTitleRegExGroup.Location = new System.Drawing.Point(730, 204);
+            this.txtChapterTitleRegExGroup.Location = new System.Drawing.Point(875, 103);
             this.txtChapterTitleRegExGroup.Name = "txtChapterTitleRegExGroup";
-            this.txtChapterTitleRegExGroup.Size = new System.Drawing.Size(135, 22);
+            this.txtChapterTitleRegExGroup.Size = new System.Drawing.Size(131, 22);
             this.txtChapterTitleRegExGroup.TabIndex = 25;
             this.txtChapterTitleRegExGroup.Text = "0";
             // 
@@ -292,18 +294,41 @@
             this.chkChapterTitleEnabled.AutoSize = true;
             this.chkChapterTitleEnabled.Checked = true;
             this.chkChapterTitleEnabled.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkChapterTitleEnabled.Location = new System.Drawing.Point(12, 207);
+            this.chkChapterTitleEnabled.Location = new System.Drawing.Point(594, 104);
             this.chkChapterTitleEnabled.Name = "chkChapterTitleEnabled";
             this.chkChapterTitleEnabled.Size = new System.Drawing.Size(18, 17);
             this.chkChapterTitleEnabled.TabIndex = 26;
             this.chkChapterTitleEnabled.UseVisualStyleBackColor = true;
             this.chkChapterTitleEnabled.CheckedChanged += new System.EventHandler(this.chkChapterTitleEnabled_CheckedChanged);
             // 
+            // chkAddPageNumber
+            // 
+            this.chkAddPageNumber.AutoSize = true;
+            this.chkAddPageNumber.Checked = true;
+            this.chkAddPageNumber.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkAddPageNumber.Location = new System.Drawing.Point(12, 139);
+            this.chkAddPageNumber.Name = "chkAddPageNumber";
+            this.chkAddPageNumber.Size = new System.Drawing.Size(146, 21);
+            this.chkAddPageNumber.TabIndex = 27;
+            this.chkAddPageNumber.Text = "Add Page Number";
+            this.chkAddPageNumber.UseVisualStyleBackColor = true;
+            // 
+            // cboPaperSize
+            // 
+            this.cboPaperSize.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboPaperSize.FormattingEnabled = true;
+            this.cboPaperSize.Location = new System.Drawing.Point(164, 136);
+            this.cboPaperSize.Name = "cboPaperSize";
+            this.cboPaperSize.Size = new System.Drawing.Size(121, 24);
+            this.cboPaperSize.TabIndex = 28;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1012, 775);
+            this.ClientSize = new System.Drawing.Size(1156, 775);
+            this.Controls.Add(this.cboPaperSize);
+            this.Controls.Add(this.chkAddPageNumber);
             this.Controls.Add(this.chkChapterTitleEnabled);
             this.Controls.Add(this.txtChapterTitleRegExGroup);
             this.Controls.Add(this.btnGenerateTitleRegEx);
@@ -370,6 +395,8 @@
         private System.Windows.Forms.Button btnGenerateTitleRegEx;
         private System.Windows.Forms.TextBox txtChapterTitleRegExGroup;
         private System.Windows.Forms.CheckBox chkChapterTitleEnabled;
+        private System.Windows.Forms.CheckBox chkAddPageNumber;
+        private System.Windows.Forms.ComboBox cboPaperSize;
     }
 }
 
