@@ -35,6 +35,7 @@ namespace mangaRenamer
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
             System.Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             this.Text = string.Format("Manga Tools {0}.{1}.{2} (by RJ Regalado)", version.Major, version.Minor, version.Build);
 
