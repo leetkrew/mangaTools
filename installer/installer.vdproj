@@ -34,12 +34,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_CAA21C8075C7B23805BF1B370B8ED2C4"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_B7F128236FD643609E3A4A0AA779864F"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -47,6 +41,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_91645958848A5087EB4046C455F050BF"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_CAA21C8075C7B23805BF1B370B8ED2C4"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -67,6 +67,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -83,6 +91,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -240,20 +264,20 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:installer"
-        "ProductCode" = "8:{468BB3C5-EC6D-4B91-BB69-98A380EB67DC}"
-        "PackageCode" = "8:{05A5D897-32EF-494F-91B0-FF68887AD9CE}"
+        "ProductName" = "8:MangaTools by RJ Regalado"
+        "ProductCode" = "8:{40C72778-5F7B-4458-943B-0DFB4D1EF9C1}"
+        "PackageCode" = "8:{2DC84BF6-55CC-478D-B2F9-2A438A7A691B}"
         "UpgradeCode" = "8:{42DD5675-4A4D-4317-9B22-98E381916655}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "ProductVersion" = "8:1.0.6601"
         "Manufacturer" = "8:RJ Regalado"
-        "ARPHELPTELEPHONE" = "8:"
-        "ARPHELPLINK" = "8:"
-        "Title" = "8:installer"
+        "ARPHELPTELEPHONE" = "8:(63.917) 3775770"
+        "ARPHELPLINK" = "8:http://www.rjregalado.com"
+        "Title" = "8:MangaTools by RJ Regalado"
         "Subject" = "8:"
         "ARPCONTACT" = "8:RJ Regalado"
         "Keywords" = "8:"

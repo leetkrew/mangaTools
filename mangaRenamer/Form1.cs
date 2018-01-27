@@ -781,6 +781,7 @@ namespace mangaRenamer
             cboChapterNumberRegEx.Enabled = trigger;
             txtChapterNumberRegExGroup.Enabled = trigger;
             btnGenerate.Enabled = trigger;
+            cboPaperSize.Enabled = trigger;
 
             chkChapterTitleEnabled.Enabled = trigger;
 
